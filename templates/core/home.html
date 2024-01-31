@@ -1,0 +1,88 @@
+{% extends "_base.html" %}
+{% block title%}Puddle Studio{% endblock title%}
+{% load static %}
+{% block content %}
+<div class="brand-name-container">
+    <div class="brand-name-row">
+        <div class="brand-word">Where</div>
+        <div class="brand-word">The</div> 
+    </div>
+    <div>
+        <div class="brand-word">Moon</div>
+        <div class="brand-word">Goes</div> 
+    </div>
+</div>
+<div class="test">
+    <nav class="nav">
+        <div class="primary-nav">
+            <ul>
+                <li><a>Menus</a></li>
+                <li><a>Reservations</a></li>
+                <li><a>Wine Club</a></li>
+                <li><a>Contact</a></li>
+            </ul>
+        </div>
+        <div class="secondary-nav">
+            <ul>
+                <li><a>About</a></li>
+                <li><a>FAQ</a></li>
+                <li><a>Media</a></li>
+                <li><a>Gift Cards</a></li>
+                <li><a>Newsletter</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="main-content">
+        <div class="hero-img">
+            <div class="green-rectangle-1"></div>
+            <div class="green-rectangle-2"></div>
+            <div class="green-rectangle-3"></div>
+            <div class="green-rectangle-4"></div>
+            <img src="{% static 'images/hero-test-photo.jpg'%}" class="responsive-image">
+        </div>
+        <h2 class="hero-title">The new bar on the block</h2>
+        <p class="hero-desc">
+            A contemprary speakeasy and cafe that 
+            brings old traditions and new concepts 
+            to the Madison metroplitan area.
+        </p>
+    </div>
+</div>
+<div class="two-column-hero-info">
+    <div class="hours">
+        <div class="green-rectangle-5"></div>
+        <div class="green-rectangle-6"></div>
+        <div class="green-rectangle-7"></div>
+        <div class="green-rectangle-8"></div>
+        <div class="green-rectangle-9"></div>
+        <div class="green-rectangle-10"></div>
+        <div class="green-rectangle-11"></div>
+        <div class="green-rectangle-12"></div>
+        <h2 class="title">Our Hours</h2>
+        <div class="hours-spacing">
+            <h6>Cafe % Study Vibes</h6>
+            <p>Monday to Wednesday - 7am to 10pm</p>
+            <p>Thursday to Saturday - 7am to 5pm</p>
+        </div>
+        <div>
+            <h6>Speakeasy Vibes</h6>
+            <p>Thursday to Sunday - 5pm - 2am </p>
+        </div>
+    </div>
+    <div class="contact">
+        <div class="green-rectangle-6"></div>
+        <div class="green-rectangle-7"></div>
+        <div class="green-rectangle-8"></div>
+        <div class="green-rectangle-9"></div>
+        <div class="green-rectangle-10"></div>
+        <div class="green-rectangle-11"></div>
+        <h2 class="title">Contact</h2>
+        <div class="contact-spacing">
+            <h6>Email</h6>
+            <p>wherethemoongoes@gmail.com</p>
+        </div>
+        <h6>Phone</h6>
+        <p>(336) 782-0109</p>
+    </div>
+</div>
+{% endblock %}
