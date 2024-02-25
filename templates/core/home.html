@@ -22,13 +22,14 @@
         <li><a>Profile</a></li>
         <li><a href="#" onClick="document.getElementById('logoutform').submit()">Log Out</a></li>
         <li>
-          <form id="logoutform" method="post" action="{% url 'logout' %}">
+          <form id="logoutform" method="post" action="{% url 'account_logout' %}">
             {% csrf_token %}
             <input type="hidden"></input>
           </form>
         </li>
         {% else %}
-        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'account_login' %}">Login</a></li>
+        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
         {% endif %}
       </ul>
     </div>
