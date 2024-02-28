@@ -18,3 +18,15 @@ def about(request):
 
 def contact(request):
     return render(request, 'core/contact.html')
+
+def menu(request):
+    return render(request, 'core/menu.html')
+
+def contact(request):
+    return render(request, 'core/contact.html')
+
+def wineclub(request):
+    return render(request, 'core/wineclub.html')
+
+def reservation(request):
+    return render(request, 'core/reservation.html')
