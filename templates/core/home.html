@@ -14,10 +14,10 @@
   <nav class="nav">
     <div class="primary-nav">
       <ul>
-        <li><a>Menus</a></li>
-        <li><a>Reservations</a></li>
-        <li><a>Wine Club</a></li>
-        <li><a>Contact</a></li>
+        <li><a href="{% url 'core:menu' %}">Menus</a></li>
+        <li><a href="{% url 'reservation:reservation' %}">Reservations</a></li>
+        <li><a href="{% url 'core:wineclub' %}">Wine Club</a></li>
+        <li><a href="{% url 'core:contact' %}">Contact</a></li>
         {% if user.is_authenticated %}
         <li><a>Profile</a></li>
         <li><a href="#" onClick="document.getElementById('logoutform').submit()">Log Out</a></li>
