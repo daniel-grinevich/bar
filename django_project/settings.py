@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "core",
     "users",
+    'reservation',
 ]
 
 LOGIN_REDIRECT_URL = "/"
