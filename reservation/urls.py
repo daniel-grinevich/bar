@@ -7,5 +7,4 @@ app_name = 'reservation'
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     path('reservation/', views.reservation, name='reservation'),
-    path('create/')
 ]

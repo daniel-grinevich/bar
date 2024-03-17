@@ -11,20 +11,20 @@ services:
     env_file:
       - .env
     depends_on:
-      - postgres-db
+      - db
     networks:
       - bar-api
     environment:
-      - DJANGO_SETTINGS_MODULE=project.settings.local
+      - DJANGO_SETTINGS_MODULE=django_project.settings
 
-  postgres-db:
+  db:
     image: postgres
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DBNAME=${POSTGRES_DBNAME}
+      POSTGRES_USER: ${POSTGRES_USER}    # Using environment variables from .env
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     restart: "on-failure"
     networks:
       - bar-api
@@ -34,4 +34,4 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  db_data:
