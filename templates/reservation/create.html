@@ -1,0 +1,20 @@
+{% extends '_base.html' %} 
+
+{% block title %}Reservation{% endblock title %} 
+{% load static %}
+
+{% block content %}
+<form id="customer-reservation-form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <!-- Date and time picker field -->
+    <label for="id_start_time">Start Time:</label>
+    <input type="datetime-local" id="id_start_time" name="start_time">
+
+    <!-- Available time slots -->
+    <div id="available-slots"></div>
+
+    <button type="submit" id="submit-btn">Submit</button>
+</form>
+{% endblock content %}
