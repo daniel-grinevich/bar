@@ -36,10 +36,10 @@ class Order(models.Model):
     )
     customer = models.CharField(max_length=255, blank=True, null=True)
     itmes = models.ManyToManyField('Item', through='OrderItem')
-    #this may need to be taken out
+    # this may need to be taken out
     total = models.FloatField()
     date_time = models.DateTimeField(default=timezone.now)
-    #this may need to be taken out
+    # this may need to be taken out
     tip = models.FloatField()
     reservation = models.ForeignKey(
         'reservation.Reservation',
