@@ -24,6 +24,9 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("", include("core.urls", namespace="core")),
     path("reservation/", include("reservation.urls", namespace="reservation")),
+    path("order/", include("order.urls", namespace="order")),
+    path("recipe/", include("recipe.urls", namespace="recipe")),
+    path("location/", include("location.urls", namespace="location")),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
