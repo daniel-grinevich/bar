@@ -3,27 +3,36 @@ from django.utils import timezone
 
 
 class Payment(models.Model):
-    order = models.ForeignKey(
-        'Order',
-        on_delete=models.CASCADE,
-    )
-    total = models.FloatField()
-    CREDIT = 'credit'
-    CASH = 'cash'
-    GIFT = 'gift'
-    FREE = 'free'
-    METHOD_CHOICES = [
-        (CREDIT, 'credit'),
-        (CASH, 'cash'),
-        (GIFT, 'gift'),
-        (FREE, 'free'),
-    ]
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    amount = models.FloatField()
     method = models.CharField(
         max_length=10,
-        choices=METHOD_CHOICES,
-        default=CREDIT
+        choices=[
+            ('credit', 'Credit'),
+            ('cash', 'Cash'),
+            ('gift', 'Gift'),
+            ('free', 'Free'),
+        ],
+        default='credit'
     )
     date_time = models.DateTimeField(default=timezone.now)
+
+
+class PaymentDetail(models.Model):
+    payment = models.OneToOneField(
+        Payment,
+        on_delete=models.CASCADE,
+        related_name='details'
+    )
+    transaction_id = models.CharField(max_length=255, null=True, blank=True)
+    payer_details = models.CharField(max_length=255, null=True, blank=True)
+    status = models.CharField(
+        max_length=100,
+        default='completed',
+        null=True,
+        blank=True
+    )
+    notes = models.TextField(null=True, blank=True)
 
 
 # Create your models here.
@@ -35,12 +44,10 @@ class Order(models.Model):
         blank=True,
     )
     customer = models.CharField(max_length=255, blank=True, null=True)
-    itmes = models.ManyToManyField('Item', through='OrderItem')
-    # this may need to be taken out
+    items = models.ManyToManyField('MenuItem', through='OrderItem')
     total = models.FloatField()
+    tip = models.FloatField(default=0)
     date_time = models.DateTimeField(default=timezone.now)
-    # this may need to be taken out
-    tip = models.FloatField()
     reservation = models.ForeignKey(
         'reservation.Reservation',
         on_delete=models.CASCADE,
