@@ -1,3 +1,3 @@
-def test_new_event(event_factory):
-    print(event_factory.name)
+def test_new_event(new_event):
+    print(new_event.name)
     assert True
