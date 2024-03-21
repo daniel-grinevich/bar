@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "core",
     "users",
-    'reservation',
+    "reservation",
+    "location",
+    "recipe",
+    "order",
 ]
 
 LOGIN_REDIRECT_URL = "/"
@@ -105,15 +108,14 @@ WSGI_APPLICATION = "django_project.wsgi.application"
 
 DATABASES = {
     "default": {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env("POSTGRES_DB"),  # This matches POSTGRES_DB from your .env
-        'USER': env("POSTGRES_USER"),  # Matches POSTGRES_USER
-        'PASSWORD': env("POSTGRES_PASSWORD"),  # Matches POSTGRES_PASSWORD
-        'HOST': env("PG_HOST"),  # Matches PG_HOST, which should be 'db'
-        'PORT': env("PG_PORT"),  # Matches PG_PORT
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("POSTGRES_DB"),  # This matches POSTGRES_DB from your .env
+        "USER": env("POSTGRES_USER"),  # Matches POSTGRES_USER
+        "PASSWORD": env("POSTGRES_PASSWORD"),  # Matches POSTGRES_PASSWORD
+        "HOST": env("PG_HOST"),  # Matches PG_HOST, which should be 'db'
+        "PORT": env("PG_PORT"),  # Matches PG_PORT
     }
 }
-
 
 
 # Password validation

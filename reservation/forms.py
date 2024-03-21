@@ -7,12 +7,12 @@ class CustomerReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = [
-            'event',
-            'number_of_people',
-            'date',
-            'start_time',
-            'end_time',
-            'special_requests',
+            "event",
+            "number_of_people",
+            "date",
+            "start_time",
+            "end_time",
+            "special_requests",
         ]
 
 
@@ -20,16 +20,14 @@ class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = [
-            'event',
-            'number_of_people',
-            'date',
-            'start_time',
-            'end_time',
-            'custom_user',
-            'status',
-            'location',
-            'special_requests',
-            'staff',
-            'deposit_paid',
-            'source'
+            "event",
+            "number_of_people",
+            "date",
+            "start_time",
+            "end_time",
+            "custom_user",
+            "status",
+            "special_requests",
+            "deposit_paid",
+            "source",
         ]  # Specify the fields you want in the form
