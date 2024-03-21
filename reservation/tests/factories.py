@@ -13,8 +13,3 @@ class EventFactory(factory.django.DjangoModelFactory):
 
     name = factory.LazyFunction(fake.name)
     cover = factory.LazyFunction(lambda: round(random.uniform(10.00, 100.00), 2))
-
-
-# class Event(models.Model):
-# name = models.CharField(max_length=100, null=False)
-# cover = models.DecimalField()
