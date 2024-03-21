@@ -9,7 +9,7 @@ endif
 build:
 	docker compose up --build -d --remove-orphans
 up:
-	docker compose up
+	docker compose up -d
 down: 
 	docker compose down
 logs:
@@ -17,9 +17,9 @@ logs:
 testcoverage: 
 	docker compose exec web coverage run manage.py test 
 migrate:
-	docker compose exec api python3 manage.py migrate --noinput
+	docker compose exec web python3 manage.py migrate --noinput
 makemigrations:
-	docker compose exec api python3 manage.py makemigrations
+	docker compose exec web python3 manage.py makemigrations
 startapp:
 	docker compose exec web python manage.py startapp $(name)
 test:
