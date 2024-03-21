@@ -22,3 +22,5 @@ makemigrations:
 	docker compose exec api python3 manage.py makemigrations
 startapp:
 	docker compose exec web python manage.py startapp $(name)
+test:
+	docker compose exec web pytest -rP
