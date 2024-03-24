@@ -2,9 +2,10 @@
 from django.urls import path
 from . import views
 
-app_name = 'reservation'
+app_name = "reservation"
 
 urlpatterns = [
-    path('', views.dashboard, name='dashboard'),
-    path('reservation/',views.reservation,name='reservation'),
+    path("", views.dashboard, name="dashboard"),
+    path("detail/<int:pk>/", views.detail, name="detail"),  # Updated path
+    path("create/", views.create, name="create"),
 ]
