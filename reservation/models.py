@@ -45,15 +45,27 @@ class Reservation(models.Model):
         super().save(*args, **kwargs)
 
     @classmethod
-    def get_week_of_reservations(cls, reference_date=None):
+    def get_week_of_reservations(cls, reference_date=None, location=None):
         """
-        Fetches reservations from a day before the reference_date to five days after.
-        If no reference_date is provided, today is used as the reference.
+        Fetches reservations from a day before the reference_date to five day
+        after given a location.
+
+        :param reference_date: The date around which to fetch reservations.
+        :type reference_date: datetime.date or None
+        :param location: The Locaation to query reservations from
+        :type: String or None
+        :return: QuerySet of Reservation objects within the specified date range.
+        :rtype: django.db.models.QuerySet
         """
         if reference_date is None:
             reference_date = timezone.localdate()  # Ensure timezone-aware comparison
         start_date = reference_date - timedelta(days=1)
         end_date = reference_date + timedelta(days=5)
+
+        if location:
+            return cls.objects.filter(
+                date__range=(start_date, end_date), location__name=location
+            )
 
         return cls.objects.filter(date__range=(start_date, end_date))
 
