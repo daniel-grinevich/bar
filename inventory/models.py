@@ -4,10 +4,10 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Brands(models.Model):
     name = models.CharField(max_length=30)
 
-class ProductCategory(models.model):
+class ProductCategory(models.Model):
     name = models.CharField(max_length=30)
 
-class Purchase(models.model):
+class Purchase(models.Model):
     name = models.CharField(max_length=30)
 
 #Specific Type Product - (ex: 750ml bottle of Titos) 
