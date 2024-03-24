@@ -44,5 +44,18 @@ class Reservation(models.Model):
             self.end_time = self.start_time + timedelta(hours=2)
         super().save(*args, **kwargs)
 
+    @classmethod
+    def get_week_of_reservations(cls, reference_date=None):
+        """
+        Fetches reservations from a day before the reference_date to five days after.
+        If no reference_date is provided, today is used as the reference.
+        """
+        if reference_date is None:
+            reference_date = timezone.localdate()  # Ensure timezone-aware comparison
+        start_date = reference_date - timedelta(days=1)
+        end_date = reference_date + timedelta(days=5)
+
+        return cls.objects.filter(date__range=(start_date, end_date))
+
     class Meta:
         ordering = ["-date", "-start_time"]
