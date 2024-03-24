@@ -2,5 +2,14 @@
 {% block title%}Puddle Studio{% endblock title%}
 {% load static %}
 {% block content %}
-<h1>Reservation</h1>
+<form action="/your-server-endpoint" method="post">
+    <label for="datePicker">Choose a date:</label>
+    <input type="date" id="datePicker" name="date">
+    <input type="submit" value="Submit">
+</form>
+
+<a href={% url 'reservation:create_reservation'%}>Create Reservation</a>
+{% for r in Reservations %}
+    {{ r.id }}
+{% endfor %}
 {% endblock %}
