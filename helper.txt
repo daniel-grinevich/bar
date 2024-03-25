@@ -1,0 +1,5 @@
+delete local branch 
+git push origin --delete <BRANCH NAME> 
+
+push local branch 
+git push -u origin <BRANCH NAME> 
