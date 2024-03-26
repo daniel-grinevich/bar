@@ -3,11 +3,10 @@ from .forms import ReservationForm
 from location.models import Location, Table
 from .models import Reservation
 from django.views.generic import View, CreateView, UpdateView
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
-class DashboardView(LoginRequiredMixin, View):
+class DashboardView(View):
     form_class = ReservationForm
     template_name = "reservation/dashboard.html"
 
@@ -15,8 +14,8 @@ class DashboardView(LoginRequiredMixin, View):
     redirect_field_name = "next"
 
     def get(self, request, *args, **kwargs):
-        location_name = request.Get.get("location", None)
-        date_range = request.Get.get("date_ranage", None)
+        location_name = request.GET.get("location", None)
+        date_range = request.GET.get("date_ranage", None)
         form = self.form_class()
         locations = Location.objects.all()
         tables = (
