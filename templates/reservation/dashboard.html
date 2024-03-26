@@ -1,18 +1,67 @@
 {% extends "_base.html" %}
 {% block title%}Puddle Studio{% endblock title%}
 {% load static %}
+
+{% block additional_head %}
+<link rel="stylesheet" href="{% static 'css/reservation/dashboard.css' %}">
+{% endblock additional_head %}
+
 {% block content %}
 
+<div class="app">
+    <div class="sidebar">
+        <div class="location">
+            <select name="locationSelector" class="location-selector">
+                <option value="Madion">Madison</option>
+                <option value="Madion">Austin</option>
+                <option value="Madion">Denver</option>
+            </select>
+        </div>
+        <div class="reservation">
+            <select name="listSelctor" class="list-selector">
+                <option value="Madion">Upcoming Reservations</option>
+                <option value="Madion">Seated Reservations</option>
+            </select>
+            <div class="reservation-list">
+                <div class="reservation-item">
+                    <div class="status">
+                        
+                    </div>
+                    <div class="details">
+                        <p>Party Size: 3</p>
+                        <p>7:00 PM</p>
+                        <h6>Kenny Xiao</h6>
+                    </div>
+                    <div class="info">
+                        <p>Table 41</p>
+                        <p>Notes</p>
+                        <p>Wine Club</p>
+                    </div>
+                </div>
+                <div class="reservation-item">
 
+                </div>
+                <div class="reservation-item">
 
-<form action="/your-server-endpoint" method="post">
-    <label for="datePicker">Choose a date:</label>
-    <input type="date" id="datePicker" name="date">
-    <input type="submit" value="Submit">
-</form>
-
-<a href={% url 'reservation:create_reservation'%}>Create Reservation</a>
-{% for r in Reservations %}
-    {{ r.id }}
-{% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="notfication-panel">
+            <p>notes?</p>
+        </div>
+    </div>
+    <div class="canvas">
+        <div class="date-picker">
+            <h1>08181998<h1>
+        </div>
+        <div class="time-slider">
+        </div>
+        <div class="layout">
+        </div>
+        <div class="room-picker">
+        </div>
+        <div class="create-new-table">
+        </div>
+    </div>
+</div>
 {% endblock %}

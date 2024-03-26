@@ -23,7 +23,7 @@ SECRET_KEY = "django-insecure-6@w)&t-7x_&i4(pzt0k*@r7st#-41&0+o1)l91pl@xi*37u%nq
 DEBUG = env.bool("DJANGO_DEBUG", default=True)
 
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -35,11 +35,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-
     "core",
     "users",
     "inventory",
