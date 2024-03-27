@@ -63,21 +63,64 @@
     margin-top: 1rem;
     padding-right: 1rem;
 }
-
 .reservation-item .status {
     flex: 0 1 20px; /* Do not grow, can shrink, and base width is 20px */
     margin-right: 10px; /* Adds some space to the right of the status */
     height: 100%;
     background-color:red;
 }
-
 .reservation-item .details {
     flex: 2; /* Allows this section to grow, taking up more space than the info section */
     /* Optionally, you can adjust padding or margin here for more space */
 }
-
 .reservation-item .info {
     flex: 1; /* This will allow it to grow but not as much as details */
     /* Adjust margin or padding here if needed */
     text-align: right; /* Aligns the text to the right, making it visually aligned to the right side */
 }
+.canvas {
+    position: relative;
+}
+.query {
+    position: absolute;
+    top:3rem;
+    left:3rem;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+}
+.query .date {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+.query .service {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+.date-selector {
+    display: flex;
+    align-items: center;
+    /* Add more styling as per your design */
+}
+.date-selector img {
+    margin-right: 8px; /* Space between the icon and the text */
+    cursor: pointer;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+input[type="date"] {
+    border: 3px solid #FFF;
+    /* Hide the default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Add more styling */
+}
+  

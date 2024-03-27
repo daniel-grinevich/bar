@@ -14,19 +14,35 @@ class DashboardView(View):
     redirect_field_name = "next"
 
     def get(self, request, *args, **kwargs):
+
         location_name = request.GET.get("location", None)
-        date_range = request.GET.get("date_ranage", None)
+        selected_date = request.GET.get("dateInput", None)
+
+        if location_name is None:
+            default_location = Location.objects.get(default=True)
+            location_name = default_location.name
+
+        reservations = (
+            Reservation.get_reservation_location_date(selected_date, location_name)
+            if selected_date and location_name
+            else Reservation.objects.all()
+        )
+
+        if request.htmx:
+            if __debug__:
+                print("HTMX Request: Get partial reservation list")
+            return render(
+                request,
+                "reservations/reservation_list_partial.html",
+                {"reservations": reservations},
+            )
+
         form = self.form_class()
         locations = Location.objects.all()
         tables = (
             Table.objects.filter(location__name=location_name)
             if location_name
             else Table.objects.all()
-        )
-        reservations = (
-            Reservation.get_week_of_reservations(date_range, location_name)
-            if date_range and location_name
-            else Reservation.objects.all()
         )
 
         return render(
