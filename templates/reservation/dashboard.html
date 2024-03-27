@@ -22,7 +22,7 @@
                 <option value="Madion">Upcoming Reservations</option>
                 <option value="Madion">Seated Reservations</option>
             </select>
-            <div class="reservation-list">
+            <div id="reservation-list" class="reservation-list">
                 <div class="reservation-item">
                     <div class="status">
                         
@@ -137,6 +137,21 @@
     <div class="canvas">
         <canvas id="interactiveCanvas" width="800" height="600"></canvas>
         <!-- Other UI elements can be added as needed -->
+        <div class="query">
+            <div class="date-selector">
+                <label for="date-picker">
+                  <img src="{% static 'images/calendar.svg'%}" alt="Calendar"> <!-- Replace with your actual image path -->
+                </label>
+                <input type="date" id="dateInput" placeholder="MM/DD/YYYY" hx-get="{% url 'reservation:dashboard'%}" hx-trigger="change" hx-target="#reservation-list" hx-include="#dateInput">
+            </div>
+            <div class="service">
+                <img src="{% static 'images/dinner.svg'%}">
+                <h6>Dinner</h6>
+            </div>
+        </div>
+        <div class="time">
+            <p>slider for time</p>
+        </div>
     </div>
     
 </div>

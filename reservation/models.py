@@ -69,5 +69,13 @@ class Reservation(models.Model):
 
         return cls.objects.filter(date__range=(start_date, end_date))
 
+    @classmethod
+    def get_reservation_location_date(cls, reference_date, location):
+        """
+        Get reservations based on location & date should have both passed in.
+        """
+        if reference_date and location:
+            return cls.objects.filter(location__name=location, date=reference_date)
+
     class Meta:
         ordering = ["-date", "-start_time"]

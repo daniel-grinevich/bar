@@ -68,7 +68,7 @@ h5 {
 }
 h6 {
     font-size: var(--fs-200);
-    font-family: var(--fs-secondary-font);
+    font-family:var(--fs-three-font);
     color: var(--primary-color);
 }
 p {
