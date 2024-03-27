@@ -18,13 +18,13 @@
     --primary-color: #004F2F;
     --secondary-color: #CBF5E3;
     --fs-xl:6.4rem;
-    --fs-700: clamp(4.1rem, 7vw + 1rem, 8.6rem); /* for h1 */
-    --fs-600: clamp(2.7rem, 5vw + 1rem, 5.8rem); /* for h2 */
-    --fs-500: clamp(1.6rem, 2.7vw + 1rem, 3.2rem); /* for h3 */
-    --fs-400: clamp(1.6rem, 2.7vw + 1rem, 3.2rem); /* for h4 */
-    --fs-300: clamp(.7rem, 1.8vw + 1rem, 2.1rem); /* for h5 */
-    --fs-200: clamp(.7rem, 1.8vw + 1rem, 2.1rem); /* for h6 */
-    --fs-100: clamp(.35rem, 1.3vw + 1rem, 1.6rem); /* for p */
+    --fs-700: clamp(2.8rem, 4.5vw + .7rem, 5.2rem); /* for h1 */
+    --fs-600: clamp(2.3rem, 3.6vw + .7rem, 4.2rem); /* for h2 */
+    --fs-500: clamp(1.8rem, 3.2vw + .7rem, 3.3rem); /* for h3 */
+    --fs-400: clamp(1.5rem, 2.7vw + .7rem, 2.5rem); /* for h4 */
+    --fs-300: clamp(1.3rem, 2.3vw + .7rem, 2.2rem); /* for h5 */
+    --fs-200: clamp(1rem, 1.8vw + .7rem, 1.6rem);   /* for h6 */
+    --fs-100: clamp(.7rem, 1.4vw + .7rem, 1.2rem);  /* for p */    
     --fw-300:300;
     --fs-primary-font: Druk_Wide_Bold;
     --fs-secondary-font: NowAlt-Medium;
