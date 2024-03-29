@@ -30,7 +30,7 @@ class Table(models.Model):
         (OUTDOOR, "Outdoor Table"),
     ]
     style = models.CharField(max_length=20, choices=TABLE_TYPE_CHOICES)
-    locatoin = models.ForeignKey(
+    location = models.ForeignKey(
         Location, on_delete=models.CASCADE, related_name="tables"
     )
 
