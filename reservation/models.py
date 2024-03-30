@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
@@ -24,7 +25,6 @@ SOURCE_CHOICES = (
 class Reservation(models.Model):
     event = models.ForeignKey("Event", on_delete=models.CASCADE)
     number_of_people = models.IntegerField(default=1)
-    date = models.DateField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     custom_user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE)
@@ -40,8 +40,23 @@ class Reservation(models.Model):
         return f"Reservation {self.id} for {self.event} on {self.date}"
 
     def save(self, *args, **kwargs):
+
         if not self.end_time and self.start_time:
             self.end_time = self.start_time + timedelta(hours=2)
+
+        conflicting_reservations = Reservation.objects.filter(
+            table=self.table,
+            location=self.location,
+            start_time__lt=self.start_time,
+            end_time__gt=self.end_time,
+        ).exists()
+
+        if self.pk:
+            conflicting_reservations = conflicting_reservations.exclude(pk=self.pk)
+
+        if conflicting_reservations:
+            raise ValidationError("A conflicting reservation exists.")
+
         super().save(*args, **kwargs)
 
     @classmethod
