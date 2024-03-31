@@ -1,17 +1,17 @@
 <!-- reservations/reservation_list_partial.html -->
-{% for reservation in reservations %}
+{% for r in reservations %}
     <div class="reservation-item">
         <div class="status">
             
         </div>
         <div class="details">
-            <p>Party Size: 3</p>
-            <p>7:00 PM</p>
-            <h6>Kenny Xiao</h6>
+            <p>Party Size: {{r.number_of_people}}</p>
+            <p>{{ r.start_time }}</p>
+            <h6>{{r.custom_user}}</h6>
         </div>
         <div class="info">
-            <p>Table 41</p>
-            <p>Notes</p>
+            <p>{{r.table.name}}</p>
+            <p>{{r.status}}</p>
             <p>Wine Club</p>
         </div>
     </div>

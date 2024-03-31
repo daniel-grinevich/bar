@@ -27,11 +27,12 @@ class Reservation(models.Model):
     number_of_people = models.IntegerField(default=1)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    date = models.DateField()
     custom_user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
     location = models.ForeignKey("location.Location", on_delete=models.CASCADE)
+    table = models.ForeignKey("location.Table", on_delete=models.CASCADE)
     special_requests = models.CharField(max_length=255, blank=True)
-    # staff = models.ForeignKey("Staff", on_delete=models.SET_NULL, null=True)
     deposit_paid = models.BooleanField(default=False)
     source = models.CharField(max_length=10, choices=SOURCE_CHOICES, default="online")
     updated_at = models.DateTimeField(default=timezone.now)
@@ -44,18 +45,24 @@ class Reservation(models.Model):
         if not self.end_time and self.start_time:
             self.end_time = self.start_time + timedelta(hours=2)
 
-        conflicting_reservations = Reservation.objects.filter(
+        conflicting_reservations_query = Reservation.objects.filter(
             table=self.table,
             location=self.location,
-            start_time__lt=self.start_time,
-            end_time__gt=self.end_time,
-        ).exists()
+            start_time__lt=self.end_time,
+            end_time__gt=self.start_time,
+        )
 
         if self.pk:
-            conflicting_reservations = conflicting_reservations.exclude(pk=self.pk)
+            conflicting_reservations_query = conflicting_reservations_query.exclude(
+                pk=self.pk
+            )
 
-        if conflicting_reservations:
+        # Check if any conflicting reservations exist
+        if conflicting_reservations_query.exists():
             raise ValidationError("A conflicting reservation exists.")
+
+        if not self.date:
+            self.date = self.start_time.date()
 
         super().save(*args, **kwargs)
 
@@ -85,12 +92,14 @@ class Reservation(models.Model):
         return cls.objects.filter(date__range=(start_date, end_date))
 
     @classmethod
-    def get_reservation_location_date(cls, reference_date, location):
+    def get_reservation_list(cls, reference_date, location, status):
         """
         Get reservations based on location & date should have both passed in.
         """
-        if reference_date and location:
-            return cls.objects.filter(location__name=location, date=reference_date)
+        if reference_date and location and status:
+            return cls.objects.filter(
+                location__name=location, date=reference_date, status=status
+            )
 
     class Meta:
         ordering = ["-date", "-start_time"]

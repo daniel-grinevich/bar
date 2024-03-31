@@ -31,3 +31,4 @@ class TableFactory(DjangoModelFactory):
     available = factory.LazyFunction(lambda: random.randint(1, 100) % 2 == 0)
     style = factory.LazyFunction(lambda: random.choice(["bar", "indoor", "outdoor"]))
     location = factory.SubFactory(LocationFactory)
+    chairs = factory.LazyFunction(lambda: random.randint(1, 6))
