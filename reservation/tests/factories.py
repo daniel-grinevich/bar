@@ -4,8 +4,8 @@ from django.utils import timezone
 from faker import Faker
 from datetime import timedelta
 from ..models import Event, Reservation
-from ...location.tests.factories import TableFactory, LocationFactory
-from ...users.tests.factories import CustomUserFactory
+from location.tests.factories import TableFactory, LocationFactory
+from users.tests.factories import CustomUserFactory
 
 fake = Faker()
 
@@ -63,7 +63,7 @@ def generate_time_without_conflict(table, location):
                     return candidate, reservation_block
 
 
-class ResrvationFactory(factory.django.DjangoModelFactory):
+class ReservationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Reservation
 
@@ -77,14 +77,15 @@ class ResrvationFactory(factory.django.DjangoModelFactory):
     )
     location = factory.SubFactory(LocationFactory)
     special_requests = ""
-    deposite_paid = False
+    deposit_paid = False
     updated_at = timezone.now()
     table = factory.SubFactory(TableFactory)  # Ensure this is your TableFactory
-    number_of_people = factory.LazyFunction(
+    number_of_people = factory.LazyAttribute(
         lambda obj: random.randint(1, obj.table.chairs)
     )
-    start_time = None
-    end_time = None
+    start_time = timezone.now()
+    end_time = timezone.now()
+    date = None
 
     @factory.post_generation
     def set_times(self, create, extracted, **kwargs):
@@ -98,6 +99,7 @@ class ResrvationFactory(factory.django.DjangoModelFactory):
         )
         self.start_time = generated_start_time
         self.end_time = generated_start_time + reservation_block
+        self.date = self.start_time.date()
 
         # Since we're bypassing the factory's built-in handling by directly assigning
         # these values, we need to save the instance if it's already been created.

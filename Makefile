@@ -24,3 +24,5 @@ startapp:
 	docker compose exec web python manage.py startapp $(name)
 test:
 	docker compose exec web pytest -rP
+reservation_dummy_data:
+	docker compose exec web python manage.py populate_dummy_reservation

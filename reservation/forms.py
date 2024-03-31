@@ -9,7 +9,6 @@ class CustomerReservationForm(forms.ModelForm):
         fields = [
             "event",
             "number_of_people",
-            "date",
             "start_time",
             "end_time",
             "special_requests",
@@ -22,7 +21,6 @@ class ReservationForm(forms.ModelForm):
         fields = [
             "event",
             "number_of_people",
-            "date",
             "start_time",
             "end_time",
             "custom_user",
@@ -30,4 +28,6 @@ class ReservationForm(forms.ModelForm):
             "special_requests",
             "deposit_paid",
             "source",
+            "location",
+            "table",
         ]  # Specify the fields you want in the form

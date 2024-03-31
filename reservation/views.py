@@ -17,14 +17,22 @@ class DashboardView(View):
 
         location_name = request.GET.get("location", None)
         selected_date = request.GET.get("dateInput", None)
+        reservation_status = request.GET.get("reservationStatus", None)
 
         if location_name is None:
             default_location = Location.objects.get(default=True)
             location_name = default_location.name
+        if reservation_status is None:
+            reservation_status = "pending"
 
+        print(location_name)
+        print(selected_date)
+        print(reservation_status)
         reservations = (
-            Reservation.get_reservation_location_date(selected_date, location_name)
-            if selected_date and location_name
+            Reservation.get_reservation_list(
+                selected_date, location_name, reservation_status
+            )
+            if selected_date and location_name and reservation_status
             else Reservation.objects.all()
         )
 
@@ -33,7 +41,7 @@ class DashboardView(View):
                 print("HTMX Request: Get partial reservation list")
             return render(
                 request,
-                "reservations/reservation_list_partial.html",
+                "reservation/reservation_list_partial.html",
                 {"reservations": reservations},
             )
 

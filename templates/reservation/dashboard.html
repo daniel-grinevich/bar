@@ -8,126 +8,43 @@
 
 {% block content %}
 
+<form hx-get="{% url 'reservation:dashboard' %}" hx-trigger="change" hx-target="#reservation-list" class="app">
 <div class="app">
     <div class="sidebar">
         <div class="location">
             <select name="locationSelector" class="location-selector">
-                <option value="Madion">Madison</option>
-                <option value="Madion">Austin</option>
-                <option value="Madion">Denver</option>
+                {% for l in locations %}
+                    <option value="{{l.name}}">{{l.name}}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="reservation">
-            <select name="listSelctor" class="list-selector">
-                <option value="Madion">Upcoming Reservations</option>
-                <option value="Madion">Seated Reservations</option>
+    
+            <select id="reservationStatus" name="reservationStatus" class="list-selector">
+                {<option value="pending">Upcoming Reservations</option>
+                <option value="confirmed">Seated Reservations</option>}
             </select>
+   
             <div id="reservation-list" class="reservation-list">
-                <div class="reservation-item">
-                    <div class="status">
+                {% for r in reservations %}
+                    <div class="reservation-item">
+                        <div class="status">
+                            
+                        </div>
+                        <div class="details">
+                            <p>Party Size: {{r.number_of_people}}</p>
+                            <p>{{ r.start_time }}</p>
+                            <h6>{{r.custom_user}}</h6>
+                        </div>
+
                         
+                        <div class="info">
+                            <p>{{r.table.name}}</p>
+                            <p>{{r.status}}</p>
+                            <p>Wine Club</p>
+                        </div>
                     </div>
-                    <div class="details">
-                        <p>Party Size: 3</p>
-                        <p>7:00 PM</p>
-                        <h6>Kenny Xiao</h6>
-                    </div>
-                    <div class="info">
-                        <p>Table 41</p>
-                        <p>Notes</p>
-                        <p>Wine Club</p>
-                    </div>
-                </div>
-                <div class="reservation-item">
-                    <div class="status">
-                        
-                    </div>
-                    <div class="details">
-                        <p>Party Size: 3</p>
-                        <p>7:00 PM</p>
-                        <h6>Kenny Xiao</h6>
-                    </div>
-                    <div class="info">
-                        <p>Table 41</p>
-                        <p>Notes</p>
-                        <p>Wine Club</p>
-                    </div>
-                </div>
-                <div class="reservation-item">
-                    <div class="status">
-                        
-                    </div>
-                    <div class="details">
-                        <p>Party Size: 3</p>
-                        <p>7:00 PM</p>
-                        <h6>Kenny Xiao</h6>
-                    </div>
-                    <div class="info">
-                        <p>Table 41</p>
-                        <p>Notes</p>
-                        <p>Wine Club</p>
-                    </div>
-                </div>
-                <div class="reservation-item">
-                    <div class="status">
-                        
-                    </div>
-                    <div class="details">
-                        <p>Party Size: 3</p>
-                        <p>7:00 PM</p>
-                        <h6>Kenny Xiao</h6>
-                    </div>
-                    <div class="info">
-                        <p>Table 41</p>
-                        <p>Notes</p>
-                        <p>Wine Club</p>
-                    </div>
-                </div>
-                <div class="reservation-item">
-                    <div class="status">
-                        
-                    </div>
-                    <div class="details">
-                        <p>Party Size: 3</p>
-                        <p>7:00 PM</p>
-                        <h6>Kenny Xiao</h6>
-                    </div>
-                    <div class="info">
-                        <p>Table 41</p>
-                        <p>Notes</p>
-                        <p>Wine Club</p>
-                    </div>
-                </div>
-                <div class="reservation-item">
-                    <div class="status">
-                        
-                    </div>
-                    <div class="details">
-                        <p>Party Size: 3</p>
-                        <p>7:00 PM</p>
-                        <h6>Kenny Xiao</h6>
-                    </div>
-                    <div class="info">
-                        <p>Table 41</p>
-                        <p>Notes</p>
-                        <p>Wine Club</p>
-                    </div>
-                </div>
-                <div class="reservation-item">
-                    <div class="status">
-                        
-                    </div>
-                    <div class="details">
-                        <p>Party Size: 3</p>
-                        <p>7:00 PM</p>
-                        <h6>Kenny Xiao</h6>
-                    </div>
-                    <div class="info">
-                        <p>Table 41</p>
-                        <p>Notes</p>
-                        <p>Wine Club</p>
-                    </div>
-                </div>   
+                {% endfor %}
             </div>
         </div>
         <div class="notfication-panel">
@@ -142,7 +59,7 @@
                 <label for="date-picker">
                   <img src="{% static 'images/calendar.svg'%}" alt="Calendar"> <!-- Replace with your actual image path -->
                 </label>
-                <input type="date" id="dateInput" placeholder="MM/DD/YYYY" hx-get="{% url 'reservation:dashboard'%}" hx-trigger="change" hx-target="#reservation-list" hx-include="#dateInput">
+                <input type="date" id="dateInput" name="dateInput" placeholder="MM/DD/YYYY"> 
             </div>
             <div class="service">
                 <img src="{% static 'images/dinner.svg'%}">
