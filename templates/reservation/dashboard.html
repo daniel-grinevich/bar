@@ -1,18 +1,78 @@
 {% extends "_base.html" %}
 {% block title%}Puddle Studio{% endblock title%}
 {% load static %}
+
+{% block additional_head %}
+<link rel="stylesheet" href="{% static 'css/reservation/dashboard.css' %}">
+{% endblock additional_head %}
+
 {% block content %}
 
+<form hx-get="{% url 'reservation:dashboard' %}" hx-trigger="change" hx-target="#reservation-list" class="app">
+<div class="app">
+    <div class="sidebar">
+        <div class="location">
+            <select name="locationSelector" class="location-selector">
+                {% for l in locations %}
+                    <option value="{{l.name}}">{{l.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="reservation">
+    
+            <select id="reservationStatus" name="reservationStatus" class="list-selector">
+                {<option value="pending">Upcoming Reservations</option>
+                <option value="confirmed">Seated Reservations</option>}
+            </select>
+   
+            <div id="reservation-list" class="reservation-list">
+                {% for r in reservations %}
+                    <div class="reservation-item">
+                        <div class="status">
+                            
+                        </div>
+                        <div class="details">
+                            <p>Party Size: {{r.number_of_people}}</p>
+                            <p>{{ r.start_time }}</p>
+                            <h6>{{r.custom_user}}</h6>
+                        </div>
 
-
-<form action="/your-server-endpoint" method="post">
-    <label for="datePicker">Choose a date:</label>
-    <input type="date" id="datePicker" name="date">
-    <input type="submit" value="Submit">
-</form>
-
-<a href={% url 'reservation:create_reservation'%}>Create Reservation</a>
-{% for r in Reservations %}
-    {{ r.id }}
-{% endfor %}
-{% endblock %}
+                        
+                        <div class="info">
+                            <p>{{r.table.name}}</p>
+                            <p>{{r.status}}</p>
+                            <p>Wine Club</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="notfication-panel">
+            <p>notes?</p>
+        </div>
+    </div>
+    <div class="canvas">
+        <canvas id="interactiveCanvas" width="800" height="600"></canvas>
+        <!-- Other UI elements can be added as needed -->
+        <div class="query">
+            <div class="date-selector">
+                <label for="date-picker">
+                  <img src="{% static 'images/calendar.svg'%}" alt="Calendar"> <!-- Replace with your actual image path -->
+                </label>
+                <input type="date" id="dateInput" name="dateInput" placeholder="MM/DD/YYYY"> 
+            </div>
+            <div class="service">
+                <img src="{% static 'images/dinner.svg'%}">
+                <h6>Dinner</h6>
+            </div>
+        </div>
+        <div class="time">
+            <p>slider for time</p>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
+{% block javascript %}
+<script src="{% static 'js/reservation/dashboard.js' %}"></script>
+{% endblock javascript %}

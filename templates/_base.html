@@ -7,8 +7,15 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+    {% block additional_head %}
+    {% endblock additional_head %}
+</head>
 <body>
-        {% block content %}
-        {% endblock content %}
+    {% block content %}
+    {% endblock content %}
+    
+    {% block javascript %}
+    <!-- JavaScript specific to the child template can go here -->
+    {% endblock javascript %}
 </body>
 </html>

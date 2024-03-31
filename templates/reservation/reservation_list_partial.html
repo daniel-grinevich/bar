@@ -1,0 +1,18 @@
+<!-- reservations/reservation_list_partial.html -->
+{% for r in reservations %}
+    <div class="reservation-item">
+        <div class="status">
+            
+        </div>
+        <div class="details">
+            <p>Party Size: {{r.number_of_people}}</p>
+            <p>{{ r.start_time }}</p>
+            <h6>{{r.custom_user}}</h6>
+        </div>
+        <div class="info">
+            <p>{{r.table.name}}</p>
+            <p>{{r.status}}</p>
+            <p>Wine Club</p>
+        </div>
+    </div>
+{% endfor %}
