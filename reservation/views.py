@@ -15,7 +15,7 @@ class DashboardView(View):
 
     def get(self, request, *args, **kwargs):
 
-        location_name = request.GET.get("location", None)
+        location_name = request.GET.get("locationSelector", None)
         selected_date = request.GET.get("dateInput", None)
         reservation_status = request.GET.get("reservationStatus", None)
 
