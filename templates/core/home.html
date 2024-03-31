@@ -20,6 +20,10 @@
         <li><a href="{% url 'core:contact' %}">Contact</a></li> {% endcomment %}
         {% if user.is_authenticated %}
         <li><a>Profile</a></li>
+        {% if user.is_staff %}
+        <li><a href="{% url 'inventory:barinventoryitem_create_form' %}">Inventory</a></li>
+        <li><a href="{% url 'inventory:purchases' %}">Payments</a></li>
+        {% endif %}
         <li><a href="#" onClick="document.getElementById('logoutform').submit()">Log Out</a></li>
         <li>
           <form id="logoutform" method="post" action="{% url 'account_logout' %}">

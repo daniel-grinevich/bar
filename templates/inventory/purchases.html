@@ -1,0 +1,22 @@
+{% extends '_base.html' %} 
+
+{% block title %}Purchases{% endblock title %} 
+{% load static %}
+
+{% block content %}
+<h2>Purchases</h2>
+{% if purchase_list %}
+
+<ul>
+{% for purchase in purchase_list %}
+<li>
+    <a>{{purchase.name}}</a>
+</li>
+{% endfor %}
+</ul>
+
+{% else %}
+<p>No Purchases</p>
+
+{% endif %}
+{% endblock content %}
