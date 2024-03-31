@@ -1,0 +1,23 @@
+{% extends '_base.html' %} 
+
+{% block title %}{{purchase.names}}{% endblock title %} 
+{% load static %}
+
+{% block content %}
+<h2>Purchase</h2>
+
+{% if messages %}
+<ul>
+{% for message in messages %}
+<li>
+{{message}}
+</li>
+{% endfor %}
+</ul>
+
+{% else %}
+<p>No Purchases</p>
+
+{% endif %}
+
+{% endblock content %}

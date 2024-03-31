@@ -27,6 +27,7 @@ urlpatterns = [
     path("order/", include("order.urls", namespace="order")),
     path("recipe/", include("recipe.urls", namespace="recipe")),
     path("location/", include("location.urls", namespace="location")),
+    path("inventory/",include("inventory.urls",namespace="inventory")),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
