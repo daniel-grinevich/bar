@@ -1,5 +1,5 @@
 {% extends "_base.html" %}
-{% block title%}Puddle Studio{% endblock title%}
+{% block title %} Puddle Studio {% endblock title %}
 {% load static %}
 
 {% block additional_head %}
@@ -7,20 +7,17 @@
 {% endblock additional_head %}
 
 {% block content %}
-
-<form hx-get="{% url 'reservation:dashboard' %}" hx-trigger="change" hx-target="#reservation-list" class="app">
 <div class="app">
     <div class="sidebar">
         <div class="location">
-            <select name="locationSelector" class="location-selector">
+            <select id= "locationSelector" name="locationSelector" class="location-selector" hx-get="{% url 'reservation:dashboard' %}" hx-trigger="change" hx-target="#reservation-list" hx-include="#dateInput, #reservationStatus">
                 {% for l in locations %}
-                    <option value="{{l.name}}">{{l.name}}</option>
+                    <option value="{{ l.name }}">{{ l.name }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="reservation">
-    
-            <select id="reservationStatus" name="reservationStatus" class="list-selector">
+            <select id="reservationStatus" name="reservationStatus" class="reservation-status-selector" hx-get="{% url 'reservation:dashboard' %}" hx-trigger="change" hx-include="#dateInput, #locationSelector" hx-target="#reservation-list">
                 {<option value="pending">Upcoming Reservations</option>
                 <option value="confirmed">Seated Reservations</option>}
             </select>
@@ -32,15 +29,15 @@
                             
                         </div>
                         <div class="details">
-                            <p>Party Size: {{r.number_of_people}}</p>
+                            <p>Party Size: {{ r.number_of_people }}</p>
                             <p>{{ r.start_time }}</p>
-                            <h6>{{r.custom_user}}</h6>
+                            <h6>{{ r.custom_user }}</h6>
                         </div>
 
                         
                         <div class="info">
-                            <p>{{r.table.name}}</p>
-                            <p>{{r.status}}</p>
+                            <p>{{ r.table.name }}</p>
+                            <p>{{ r.status }}</p>
                             <p>Wine Club</p>
                         </div>
                     </div>
@@ -57,20 +54,19 @@
         <div class="query">
             <div class="date-selector">
                 <label for="date-picker">
-                  <img src="{% static 'images/calendar.svg'%}" alt="Calendar"> <!-- Replace with your actual image path -->
+                    <img src="{% static 'images/calendar.svg' %}" alt="Calendar"> <!-- Replace with your actual image path -->
                 </label>
-                <input type="date" id="dateInput" name="dateInput" placeholder="MM/DD/YYYY"> 
+                <input type="date" id="dateInput" name="dateInput" placeholder="MM/DD/YYYY" value="{{ today }}"  hx-get="{% url 'reservation:dashboard' %}" hx-trigger="change" hx-target="#reservation-list" hx-include="#reservationStatus, #locationSelector"> 
             </div>
             <div class="service">
-                <img src="{% static 'images/dinner.svg'%}">
+                <img src="{% static 'images/dinner.svg' %}">
                 <h6>Dinner</h6>
             </div>
         </div>
         <div class="time">
             <p>slider for time</p>
         </div>
-    </div>
-    
+    </div>  
 </div>
 {% endblock content %}
 {% block javascript %}
