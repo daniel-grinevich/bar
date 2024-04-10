@@ -17,6 +17,6 @@
 
 {% else %}
 <p>No Purchases</p>
-
 {% endif %}
+<a href="{% url 'inventory:purchases_create' %}" role="button">Add A Purchase</a>
 {% endblock content %}

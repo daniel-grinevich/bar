@@ -5,19 +5,10 @@
 
 {% block content %}
 <h2>Purchase</h2>
-
-{% if messages %}
 <ul>
-{% for message in messages %}
-<li>
-{{message}}
-</li>
+{% for purchase_item in purchase.purchaseitem_set.all %}
+<li>{{purchase_item}}</li>
 {% endfor %}
 </ul>
-
-{% else %}
-<p>No Purchases</p>
-
-{% endif %}
-
+<a href="{% url 'inventory:purchases_item_edit' pk=purchase.pk%}" role="button">Add A Purchase</a>
 {% endblock content %}

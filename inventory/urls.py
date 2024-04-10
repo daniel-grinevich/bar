@@ -12,4 +12,9 @@ urlpatterns = [
         views.PurchaseDetailView.as_view(),
         name="purchases_detail",
     ),
+    path(
+        "purchases/<int:pk>/item/edit",
+        views.PurchaseItemEditView.as_view(),
+        name="purchases_item_edit",
+    ),
 ]

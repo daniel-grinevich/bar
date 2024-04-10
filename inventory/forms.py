@@ -1,5 +1,5 @@
 from django import forms
-from .models import BarInventoryItem, BarInventoryProduct, Purchase
+from .models import BarInventoryItem, BarInventoryProduct, Purchase, PurchaseItem
 
 
 class BarInventoryItemForm(forms.ModelForm):
@@ -29,11 +29,28 @@ class PurchaseForm(forms.ModelForm):
         ]
 
 
-PurchaseFormSet = forms.inlineformset_factory(
+class PurchaseItemForm(forms.ModelForm):
+
+    class Meta:
+        model = PurchaseItem
+        fields = ["product", "date_purchased", "purchase_price", "purchase"]
+        widgets = {
+            "date_purchased": forms.DateInput(
+                format=("%Y-%m-%d"),
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Select a date",
+                    "type": "date",
+                },
+            ),
+        }
+
+
+PurchaseItemFormSet = forms.inlineformset_factory(
     Purchase,
-    BarInventoryItem,
+    PurchaseItem,
     fields=("__all__"),
-    form=BarInventoryItemForm,
-    extra=0,
+    form=PurchaseItemForm,
+    extra=3,
     min_num=1,
 )
