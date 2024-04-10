@@ -6,3 +6,6 @@ from .models import *
 admin.site.register(BarInventoryItem)
 admin.site.register(BarInventoryProduct)
 admin.site.register(Purchase)
+admin.site.register(ProductCategory)
+admin.site.register(Brands)
+admin.site.register(PurchaseItem)
