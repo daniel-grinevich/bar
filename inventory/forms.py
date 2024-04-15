@@ -1,5 +1,12 @@
 from django import forms
-from .models import BarInventoryItem, BarInventoryProduct, Purchase, PurchaseItem
+from .models import (
+    BarInventoryItem,
+    BarInventoryProduct,
+    Purchase,
+    PurchaseItem,
+    Brands,
+    ProductCategory,
+)
 
 
 class BarInventoryItemForm(forms.ModelForm):
@@ -9,6 +16,8 @@ class BarInventoryItemForm(forms.ModelForm):
             "name",
             "level",
             "location",
+            "date_expired",
+            "product",
         ]
 
 
@@ -18,6 +27,12 @@ class BarInventoryProductForm(forms.ModelForm):
         fields = [
             "name",
             "brand",
+            "category",
+            "size",
+            "refridgerated",
+            "par_level",
+            "quantity",
+            "location",
         ]
 
 
@@ -54,3 +69,19 @@ PurchaseItemFormSet = forms.inlineformset_factory(
     extra=3,
     min_num=1,
 )
+
+
+class BrandsForm(forms.ModelForm):
+    class Meta:
+        model = Brands
+        fields = [
+            "name",
+        ]
+
+
+class ProductCategoryForm(forms.ModelForm):
+    class Meta:
+        model = ProductCategory
+        fields = [
+            "name",
+        ]

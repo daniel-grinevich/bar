@@ -46,6 +46,7 @@ class PurchaseItem(models.Model):
     purchase = models.ForeignKey(Purchase, on_delete=models.RESTRICT)
     purchase_price = models.IntegerField()
     date_purchased = models.DateField()
+    quantity = models.IntegerField(default=1)
     product = models.ForeignKey(BarInventoryProduct, on_delete=models.RESTRICT)
 
     def __str__(self):
