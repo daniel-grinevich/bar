@@ -1,7 +1,20 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from .forms import BarInventoryItemForm, BarInventoryProductForm, PurchaseItemFormSet
-from .models import BarInventoryItem, BarInventoryProduct, Purchase, PurchaseItem
+from .forms import (
+    BarInventoryItemForm,
+    BarInventoryProductForm,
+    PurchaseItemFormSet,
+    BrandsForm,
+    ProductCategoryForm,
+)
+from .models import (
+    BarInventoryItem,
+    BarInventoryProduct,
+    Purchase,
+    PurchaseItem,
+    Brands,
+    ProductCategory,
+)
 from django.views.generic import (
     View,
     CreateView,
@@ -15,21 +28,35 @@ from django.contrib import messages
 from django.urls import reverse
 
 
-# Create your views here.
+# Inventory Items
 
 
-class CreateInventoryItem(CreateView):
+class CreateBarInventoryItem(CreateView):
     model = BarInventoryItem
     form_class = BarInventoryItemForm
-    template_name_suffix = "_create_form"
+    template_name = "inventory/bar_inventory_item_create_form.html"
+
+
+class BarInventoryItemListView(ListView):
+    model = BarInventoryItem
+    template_name = "inventory/bar_inventory_items.html"
+
+
+# Inventory Products
 
 
 class CreateBarInventoryProduct(CreateView):
     model = BarInventoryProduct
     form_class = BarInventoryProductForm
-    template_name_suffix = "_create_form"
+    template_name = "inventory/bar_inventory_product_create_form.html"
 
 
+class BarInventoryProductListView(ListView):
+    model = BarInventoryProduct
+    template_name = "inventory/bar_inventory_products.html"
+
+
+# Purchases
 class PurchaseListView(ListView):
     model = Purchase
     template_name = "inventory/purchases.html"
@@ -77,3 +104,27 @@ class PurchaseItemEditView(SingleObjectMixin, FormView):
 
     def get_success_url(self):
         return reverse("inventory:purchases_detail", kwargs={"pk": self.object.pk})
+
+
+# Brands
+class BrandsListView(ListView):
+    model = Brands
+    template_name = "inventory/brands.html"
+
+
+class BrandsCreateView(CreateView):
+    model = Brands
+    form_class = BrandsForm
+    template_name_suffix = "_create_form"
+
+
+# Product Categories
+class ProductCategoryListView(ListView):
+    model = ProductCategory
+    template_name = "inventory/product_categories.html"
+
+
+class ProductCategoryCreateView(CreateView):
+    model = ProductCategory
+    form_class = ProductCategoryForm
+    template_name_suffix = "_create_form"
