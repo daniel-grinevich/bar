@@ -123,4 +123,19 @@ input[type="date"] {
     appearance: none;
     /* Add more styling */
 }
-  
+.time-selector {
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    justify-content: space-between;
+    width: fit-content;
+}
+.time-selector span {
+    width: 80px;
+    font-size: var(--fs-200);
+    font-family:var(--fs-three-font);
+    color: var(--primary-color);
+}

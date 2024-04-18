@@ -50,4 +50,25 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.addEventListener('mouseout', () => {
         isDragging = false;
     });
+
+
+    var slider = document.getElementById('time-slider');
+    var display = document.getElementById('time-display');
+
+    function updateTime() {
+        var minutes = slider.value;
+        var hours = Math.floor(minutes / 60);
+        var mins = minutes % 60;
+        var timePeriod = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        mins = mins < 10 ? '0'+mins : mins;
+        var timeString = hours + ':' + mins + ' ' + timePeriod;
+        display.textContent = timeString;
+    }
+
+    slider.addEventListener('input', updateTime);
+
+    // Initialize display
+    updateTime();
 });
