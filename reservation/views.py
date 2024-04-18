@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from .forms import ReservationForm
 from .models import Reservation
-from django.views.generic import View, CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, TemplateView
 from .mixins import ReservationMixin
 
 
 # Create your views here.
-class DashboardView(ReservationMixin, View):
+class DashboardView(ReservationMixin, TemplateView):
     form_class = ReservationForm
     template_name = "reservation/dashboard.html"
 
@@ -18,6 +18,7 @@ class DashboardView(ReservationMixin, View):
         location_name, selected_date, reservation_status, selected_time = (
             self.process_reservation_data(request)
         )
+        print(location_name, selected_date, reservation_status, selected_time)
         context = self.get_context_data(
             location_name=location_name,
             reservation_status=reservation_status,
