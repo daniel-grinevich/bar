@@ -56,16 +56,17 @@
                 <label for="date-picker">
                     <img src="{% static 'images/calendar.svg' %}" alt="Calendar"> <!-- Replace with your actual image path -->
                 </label>
-                <input type="date" id="dateInput" name="dateInput" placeholder="MM/DD/YYYY" value="{{ today }}"  hx-get="{% url 'reservation:dashboard' %}" hx-trigger="change" hx-target="#reservation-list" hx-include="#reservationStatus, #locationSelector"> 
+                <input type="date" id="dateInput" name="dateInput" placeholder="MM/DD/YYYY" value="{{ selected_date }}"  hx-get="{% url 'reservation:dashboard' %}" hx-trigger="change" hx-target="#reservation-list" hx-include="#reservationStatus, #locationSelector, #slider-container"> 
             </div>
             <div class="service">
                 <img src="{% static 'images/dinner.svg' %}">
                 <h6>Dinner</h6>
             </div>
         </div>
-        <div class="time">
-            <p>slider for time</p>
-        </div>
+        <div class="time-selector" id="slider-container" hx-trigger="change" hx-target="#reservation-list" hx-get="{% url 'reservation:dashboard' %}" hx-include="#reservationStatus, #locationSelector, #dateInput, #time-slider">
+            <input type="range" id="time-slider" name="timeInput" min="0" max="1439" value="480" step="15">
+            <span id="time-display">08:00 AM</span>
+        </div>        
     </div>  
 </div>
 {% endblock content %}
