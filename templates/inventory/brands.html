@@ -1,22 +1,20 @@
-{% extends '_base.html' %} 
-
-{% block title %}Brands{% endblock title %} 
+{% extends "_base.html" %}
+{% block title %}
+    Brands
+{% endblock title %}
 {% load static %}
-
 {% block content %}
-<h2>Brands</h2>
-{% if brands_list %}
-
-<ul>
-{% for brand in brands_list %}
-<li>
-    <a>{{brand.name}}</a>
-</li>
-{% endfor %}
-</ul>
-
-{% else %}
-<p>No Brands</p>
-{% endif %}
-<a href="{% url 'inventory:purchases_create' %}" role="button">Add A Purchase</a>
+    <h2>Brands</h2>
+    {% if brands_list %}
+        <ul>
+            {% for brand in brands_list %}
+                <li>
+                    <a>{{ brand.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No Brands</p>
+    {% endif %}
+    <a href="{% url 'inventory:purchases_create' %}" role="button">Add A Purchase</a>
 {% endblock content %}

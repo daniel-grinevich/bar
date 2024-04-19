@@ -12,7 +12,7 @@ from .models import (
     BarInventoryProduct,
     Purchase,
     PurchaseItem,
-    Brands,
+    Brand,
     ProductCategory,
 )
 from django.views.generic import (
@@ -108,12 +108,12 @@ class PurchaseItemEditView(SingleObjectMixin, FormView):
 
 # Brands
 class BrandsListView(ListView):
-    model = Brands
+    model = Brand
     template_name = "inventory/brands.html"
 
 
 class BrandsCreateView(CreateView):
-    model = Brands
+    model = Brand
     form_class = BrandsForm
     template_name_suffix = "_create_form"
 

@@ -1,14 +1,13 @@
-{% extends '_base.html' %} 
-
-{% block title %}{{purchase.names}}{% endblock title %} 
+{% extends "_base.html" %}
+{% block title %}
+    {{ purchase.names }}
+{% endblock title %}
 {% load static %}
-
 {% block content %}
-<h2>Purchase</h2>
-<ul>
-{% for purchase_item in purchase.purchaseitem_set.all %}
-<li>{{purchase_item}}</li>
-{% endfor %}
-</ul>
-<a href="{% url 'inventory:purchases_item_edit' pk=purchase.pk%}" role="button">Add A Purchase</a>
+    <h2>Purchase</h2>
+    <ul>
+        {% for purchase_item in purchase.purchaseitem_set.all %}<li>{{ purchase_item }}</li>{% endfor %}
+    </ul>
+    <a href="{% url 'inventory:purchases_item_edit' pk=purchase.pk %}"
+       role="button">Add A Purchase</a>
 {% endblock content %}

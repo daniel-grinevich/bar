@@ -4,7 +4,7 @@ from .models import (
     BarInventoryProduct,
     Purchase,
     PurchaseItem,
-    Brands,
+    Brand,
     ProductCategory,
 )
 
@@ -64,7 +64,13 @@ class PurchaseItemForm(forms.ModelForm):
 PurchaseItemFormSet = forms.inlineformset_factory(
     Purchase,
     PurchaseItem,
-    fields=("__all__"),
+    fields=(
+        "purchase",
+        "product",
+        "quantity",
+        "purchase_price",
+        "date_purchased",
+    ),
     form=PurchaseItemForm,
     extra=3,
     min_num=1,
@@ -73,7 +79,7 @@ PurchaseItemFormSet = forms.inlineformset_factory(
 
 class BrandsForm(forms.ModelForm):
     class Meta:
-        model = Brands
+        model = Brand
         fields = [
             "name",
         ]
