@@ -31,7 +31,7 @@ from django.urls import reverse
 # Inventory Items
 
 
-class CreateBarInventoryItem(CreateView):
+class BarInventoryItemCreateView(CreateView):
     model = BarInventoryItem
     form_class = BarInventoryItemForm
     template_name = "inventory/bar_inventory_item_create_form.html"
@@ -45,7 +45,7 @@ class BarInventoryItemListView(ListView):
 # Inventory Products
 
 
-class CreateBarInventoryProduct(CreateView):
+class BarInventoryProductCreateView(CreateView):
     model = BarInventoryProduct
     form_class = BarInventoryProductForm
     template_name = "inventory/bar_inventory_product_create_form.html"
