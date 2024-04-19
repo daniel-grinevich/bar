@@ -57,3 +57,8 @@ def new_bar_inventory_item(db, bar_inventory_item_factory):
 def new_bar_inventory_product(db, bar_inventory_product_factory):
     product = bar_inventory_product_factory.build()
     return product
+
+
+@pytest.fixture
+def new_purchase_form(db):
+    return {"name": "Purchase A"}

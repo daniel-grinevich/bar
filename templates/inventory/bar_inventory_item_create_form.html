@@ -1,13 +1,13 @@
-{% extends '_base.html' %} 
-
-{% block title %}Inventory Item{% endblock title %} 
+{% extends "_base.html" %}
+{% block title %}
+    Inventory Item
+{% endblock title %}
 {% load static %}
-
 {% block content %}
-<h2>Create Inventory Item </h2>
-<form id="bar_inventory_item_create_form" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" id="submit-btn">Submit</button>
-</form>
+    <h2>Create Inventory Item</h2>
+    <form id="bar_inventory_item_create_form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" id="submit-btn">Submit</button>
+    </form>
 {% endblock content %}

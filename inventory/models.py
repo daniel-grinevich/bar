@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 
 
-class Brands(models.Model):
+class Brand(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self):
@@ -33,7 +33,7 @@ class BarInventoryProduct(models.Model):
     category = models.ForeignKey(ProductCategory, on_delete=models.RESTRICT)
     size = models.IntegerField()
     refridgerated = models.BooleanField(default=False)
-    brand = models.ForeignKey(Brands, on_delete=models.RESTRICT)
+    brand = models.ForeignKey(Brand, on_delete=models.RESTRICT)
     par_level = models.IntegerField(default=0)
     quantity = models.IntegerField(default=0)
     location = models.ForeignKey("location.Location", on_delete=models.RESTRICT)

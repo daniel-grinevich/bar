@@ -1,3 +1,7 @@
+from django.urls import reverse
+from pytest_django.asserts import assertRedirects
+
+
 def test_new_purchase_item(new_purchase_item):
     print(new_purchase_item.product)
     if new_purchase_item.quantity > 0 and "Product" in new_purchase_item.product.name:
@@ -53,3 +57,10 @@ def test_new_bar_inventory_product(new_bar_inventory_product):
         assert True
     else:
         assert False
+
+
+def test_new_purchase_form(client, new_purchase_form, new_user):
+    form_url = reverse("inventory:purchases_create")
+    response = client.post(form_url, data=new_purchase_form)
+    print(response.content)
+    assert response.status_code == 302
