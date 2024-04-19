@@ -12,12 +12,14 @@ urlpatterns = [
     ),
     path(
         "products/create/",
-        views.CreateBarInventoryProduct.as_view(),
+        views.BarInventoryProductCreateView.as_view(),
         name="products_create",
     ),
     # InventoryItems
     path("items/", views.BarInventoryItemListView.as_view(), name="inventory_items"),
-    path("items/create/", views.CreateBarInventoryItem.as_view(), name="items_create"),
+    path(
+        "items/create/", views.BarInventoryItemCreateView.as_view(), name="items_create"
+    ),
     # Purchases
     path("purchases/", views.PurchaseListView.as_view(), name="purchases"),
     path(
