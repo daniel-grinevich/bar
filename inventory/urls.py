@@ -42,7 +42,7 @@ urlpatterns = [
     path("categories/", views.ProductCategoryListView.as_view(), name="categories"),
     path(
         "categories/create/",
-        views.ProductCategoryListView.as_view(),
+        views.ProductCategoryCreateView.as_view(),
         name="categories_create",
     ),
 ]
