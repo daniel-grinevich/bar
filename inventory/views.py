@@ -34,12 +34,15 @@ from django.urls import reverse
 class BarInventoryItemCreateView(CreateView):
     model = BarInventoryItem
     form_class = BarInventoryItemForm
-    template_name = "inventory/bar_inventory_item_create_form.html"
+    template_name = "inventory/item/bar_inventory_item_form.html"
+
+    def get_success_url(self):
+        return reverse("inventory:inventory_items")
 
 
 class BarInventoryItemListView(ListView):
     model = BarInventoryItem
-    template_name = "inventory/bar_inventory_items.html"
+    template_name = "inventory/item/bar_inventory_items.html"
 
 
 # Inventory Products
@@ -48,23 +51,26 @@ class BarInventoryItemListView(ListView):
 class BarInventoryProductCreateView(CreateView):
     model = BarInventoryProduct
     form_class = BarInventoryProductForm
-    template_name = "inventory/bar_inventory_product_create_form.html"
+    template_name = "inventory/product/bar_inventory_product_form.html"
+
+    def get_success_url(self):
+        return reverse("inventory:inventory_products")
 
 
 class BarInventoryProductListView(ListView):
     model = BarInventoryProduct
-    template_name = "inventory/bar_inventory_products.html"
+    template_name = "inventory/product/bar_inventory_products.html"
 
 
 # Purchases
 class PurchaseListView(ListView):
     model = Purchase
-    template_name = "inventory/purchases.html"
+    template_name = "inventory/purchase/purchases.html"
 
 
 class PurchaseCreateView(CreateView):
     model = Purchase
-    template_name = "inventory/purchases_create.html"
+    template_name = "inventory/purchase/purchase_form.html"
     fields = ["name"]
 
     def form_valid(self, form):
@@ -79,7 +85,7 @@ class PurchaseCreateView(CreateView):
 
 class PurchaseDetailView(DetailView):
     model = Purchase
-    template_name = "inventory/purchases_detail.html"
+    template_name = "inventory/purchase/purchases_detail.html"
 
 
 class PurchaseItemEditView(SingleObjectMixin, FormView):
@@ -109,22 +115,28 @@ class PurchaseItemEditView(SingleObjectMixin, FormView):
 # Brands
 class BrandsListView(ListView):
     model = Brand
-    template_name = "inventory/brands.html"
+    template_name = "inventory/brand/brands.html"
 
 
 class BrandsCreateView(CreateView):
     model = Brand
     form_class = BrandsForm
-    template_name_suffix = "_create_form"
+    template_name = "inventory/brand/brand_form.html"
+
+    def get_success_url(self):
+        return reverse("inventory:brands")
 
 
 # Product Categories
 class ProductCategoryListView(ListView):
     model = ProductCategory
-    template_name = "inventory/product_categories.html"
+    template_name = "inventory/category/product_categories.html"
 
 
 class ProductCategoryCreateView(CreateView):
     model = ProductCategory
     form_class = ProductCategoryForm
-    template_name_suffix = "_create_form"
+    template_name = "inventory/category/product_category_form.html"
+
+    def get_success_url(self):
+        return reverse("inventory:categories")

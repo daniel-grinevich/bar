@@ -1,20 +1,20 @@
-{% extends '_base.html' %}
+{% extends "_base.html" %}
 {% block title %}
-    Product Categories
+    Purchases
 {% endblock title %}
 {% load static %}
 {% block content %}
-    <h2>Product Categories</h2>
-    {% if productcategory_list %}
+    <h2>Purchases</h2>
+    {% if purchase_list %}
         <ul>
-            {% for category in productcategory_list %}
+            {% for purchase in purchase_list %}
                 <li>
-                    <a>{{ category.name }}</a>
+                    <a href="{% url 'inventory:purchases_item_edit' pk=purchase.pk %}"> {{ purchase.name }} </a>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>No Categories</p>
+        <p>No Purchases</p>
     {% endif %}
     <a href="{% url 'inventory:purchases_create' %}" role="button">Add A Purchase</a>
 {% endblock content %}

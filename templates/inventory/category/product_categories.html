@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+{% block title %}
+    Product Categories
+{% endblock title %}
+{% load static %}
+{% block content %}
+    <h2>Product Categories</h2>
+    {% if productcategory_list %}
+        <ul>
+            {% for category in productcategory_list %}
+                <li>
+                    <a>{{ category.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No Categories</p>
+    {% endif %}
+    <a href="{% url 'inventory:categories_create' %}" role="button">Add A Category</a>
+{% endblock content %}
