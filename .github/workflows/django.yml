@@ -1,0 +1,24 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # This job runs on a Linux machine provided by GitHub
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # This action checks out your repository under $GITHUB_WORKSPACE
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to Raspberry Pi
+      run: |
+        ssh -o "StrictHostKeyChecking=no" pi@your-pi-address 'cd /path/to/your/project && git pull && ./deploy_script.sh'
