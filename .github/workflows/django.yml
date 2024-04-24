@@ -21,4 +21,4 @@ jobs:
 
     - name: Deploy to Raspberry Pi
       run: |
-        ssh -o "StrictHostKeyChecking=no" pi@your-pi-address 'cd /path/to/your/project && git pull && ./deploy_script.sh'
+        ssh -o "StrictHostKeyChecking=no" danielgrinevich@10.0.0.203 'cd /home/danielgrinevich/Documents/projects/inventory_v1 && git pull && ./deploy_script.sh'
