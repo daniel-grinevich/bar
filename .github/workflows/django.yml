@@ -23,6 +23,10 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+    - name: Print setup SSH successful
+      run: |
+        echo "SSH sucessful"
+
     - name: Deploy to Raspberry Pi
       run: |
         ssh -o "StrictHostKeyChecking=no" danielgrinevich@10.0.0.203 'cd /home/danielgrinevich/Documents/projects/inventory_v1 && git pull && ./deploy_script.sh'
