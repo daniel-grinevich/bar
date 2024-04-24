@@ -14,6 +14,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2  # This action checks out your repository under $GITHUB_WORKSPACE
 
+    - name: Print code checked out
+      run: |
+        echo "Respository is checked out"
+        
     - name: Setup SSH
       uses: webfactory/ssh-agent@v0.5.3
       with:
