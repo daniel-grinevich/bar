@@ -3,7 +3,7 @@ import random
 from faker import Faker
 from django.utils import timezone
 from ..models import (
-    Brands,
+    Brand,
     ProductCategory,
     Purchase,
     BarInventoryProduct,
@@ -18,7 +18,7 @@ fake = Faker()
 
 class BrandsFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Brands
+        model = Brand
 
     name = factory.Sequence(lambda n: "Brand%d" % n)
 
@@ -35,7 +35,6 @@ class PurchaseItemFactory(factory.django.DjangoModelFactory):
         model = PurchaseItem
 
     purchase = factory.SubFactory("inventory.tests.factories.PurchaseFactory")
-    date_purchased = timezone.now().date
     quantity = factory.LazyAttribute(lambda obj: random.randint(1, 99))
     product = factory.SubFactory("inventory.tests.factories.BarInventoryProductFactory")
 
@@ -45,6 +44,7 @@ class PurchaseFactory(factory.django.DjangoModelFactory):
         model = Purchase
 
     name = factory.Sequence(lambda n: "Purchase%d" % n)
+    date_purchased = timezone.now().date
 
     class Params:
         with_purchase_items = factory.Trait(
