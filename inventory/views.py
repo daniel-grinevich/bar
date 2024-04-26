@@ -6,6 +6,7 @@ from .forms import (
     PurchaseItemFormSet,
     BrandsForm,
     ProductCategoryForm,
+    PurchaseForm,
 )
 from .models import (
     BarInventoryItem,
@@ -26,7 +27,7 @@ from django.views.generic import (
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib import messages
 from django.urls import reverse
-
+from django.db import transaction, IntegrityError
 
 # Inventory Items
 
@@ -71,7 +72,7 @@ class PurchaseListView(ListView):
 class PurchaseCreateView(CreateView):
     model = Purchase
     template_name = "inventory/purchase/purchase_form.html"
-    fields = ["name"]
+    form_class = PurchaseForm
 
     def form_valid(self, form):
 
@@ -88,9 +89,17 @@ class PurchaseDetailView(DetailView):
     template_name = "inventory/purchase/purchases_detail.html"
 
 
+def deliverPurchase(request, pk):
+    purchase = Purchase.objects.get(pk=pk)
+    purchase.delivered = True
+    purchase.save()
+
+    return HttpResponseRedirect(reverse("inventory:purchases"))
+
+
 class PurchaseItemEditView(SingleObjectMixin, FormView):
     model = Purchase
-    template_name = "inventory/purchase_item_edit.html"
+    template_name = "inventory/purchase/item/purchase_item_edit.html"
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Purchase.objects.all())
@@ -98,13 +107,16 @@ class PurchaseItemEditView(SingleObjectMixin, FormView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Purchase.objects.all())
+
         return super().post(request, *args, **kwargs)
 
     def get_form(self, form_class=None):
         return PurchaseItemFormSet(**self.get_form_kwargs(), instance=self.object)
 
     def form_valid(self, form):
+
         form.save()
+
         messages.add_message(self.request, messages.SUCCESS, "Changes were saved")
         return HttpResponseRedirect(self.get_success_url())
 

@@ -5,7 +5,7 @@
 {% load static %}
 {% block content %}
     <h2>Create Inventory Item</h2>
-    <form id="bar_inventory_item_create_form" method="post">
+    <form id="bar_inventory_item_form" method="post">
         {% csrf_token %}
         {{ form.as_div }}
         <button type="submit" id="submit-btn">Submit</button>

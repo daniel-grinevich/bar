@@ -31,6 +31,11 @@ urlpatterns = [
         name="purchases_detail",
     ),
     path(
+        "purchases/<int:pk>/deliver",
+        views.deliverPurchase,
+        name="purchases_deliver",
+    ),
+    path(
         "purchases/<int:pk>/item/edit",
         views.PurchaseItemEditView.as_view(),
         name="purchases_item_edit",
