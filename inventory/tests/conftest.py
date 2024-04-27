@@ -8,6 +8,7 @@ from .factories import (
     ProductCategoryFactory,
 )
 import pytest
+from datetime import date
 
 register(PurchaseItemFactory)
 register(BarInventoryItemFactory)
@@ -61,4 +62,4 @@ def new_bar_inventory_product(db, bar_inventory_product_factory):
 
 @pytest.fixture
 def new_purchase_form(db):
-    return {"name": "Purchase A"}
+    return {"name": "Purchase A", "date_purchased": "11/11/2023"}
