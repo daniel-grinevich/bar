@@ -1,6 +1,8 @@
 from django.urls import reverse
 from pytest_django.asserts import assertRedirects, assertTemplateUsed
 import pytest
+from ..forms import PurchaseForm
+from ..models import Purchase
 
 
 def test_new_purchase_item(new_purchase_item):
@@ -60,13 +62,7 @@ def test_new_bar_inventory_product(new_bar_inventory_product):
         assert False
 
 
-def test_new_purchase_form(client, new_purchase_form):
-    form_url = reverse("inventory:purchases_create")
-    response = client.post(form_url, data=new_purchase_form)
-    print(response.content)
-    assert response.status_code == 200
-
-
+# Test Template Access
 @pytest.mark.parametrize(
     "url_name,template",
     [
@@ -87,3 +83,28 @@ def test_template_access(db, url_name, template, client):
     url = reverse(url_name)
     response = client.get(url)
     assertTemplateUsed(response, template)
+    assert response.status_code == 200
+
+
+# Test Form Views
+
+
+def test_purchase_form_valid(db, new_purchase_form, client):
+    form = PurchaseForm(new_purchase_form)
+    print(form.errors)
+    assert form.is_valid
+
+
+@pytest.mark.parametrize(
+    "url_name, redirect",
+    [
+        ("inventory:purchases_create", "inventory:purchases_item_edit"),
+    ],
+)
+def test_purchase_form_post_redirects(
+    db, url_name, redirect, new_purchase_form, client
+):
+    url = reverse(url_name)
+    response = client.post(url, data=new_purchase_form)
+    pk = Purchase.objects.get(name="Purchase A").pk
+    assertRedirects(response, reverse(redirect, kwargs={"pk": pk}))
