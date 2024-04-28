@@ -1,6 +1,7 @@
 import factory
 import random
 from faker import Faker
+from datetime import date
 from django.utils import timezone
 from ..models import (
     Brand,
@@ -37,6 +38,8 @@ class PurchaseItemFactory(factory.django.DjangoModelFactory):
     purchase = factory.SubFactory("inventory.tests.factories.PurchaseFactory")
     quantity = factory.LazyAttribute(lambda obj: random.randint(1, 99))
     product = factory.SubFactory("inventory.tests.factories.BarInventoryProductFactory")
+    purchase_price = factory.LazyAttribute(lambda obj: random.randint(1, 99))
+    location = factory.SubFactory(LocationFactory)
 
 
 class PurchaseFactory(factory.django.DjangoModelFactory):
@@ -44,7 +47,8 @@ class PurchaseFactory(factory.django.DjangoModelFactory):
         model = Purchase
 
     name = factory.Sequence(lambda n: "Purchase%d" % n)
-    date_purchased = timezone.now().date
+
+    # date_purchased = date.now
 
     class Params:
         with_purchase_items = factory.Trait(
@@ -71,7 +75,7 @@ class BarInventoryItemFactory(factory.django.DjangoModelFactory):
         model = BarInventoryItem
 
     name = factory.Sequence(lambda n: "InventoryItem%d" % n)
-    date_expired = timezone.now().date
+    date_expired = date.today
     location = factory.SubFactory(LocationFactory)
     product = factory.SubFactory(BarInventoryProductFactory)
     level = factory.LazyAttribute(lambda obj: random.randint(1, 100))

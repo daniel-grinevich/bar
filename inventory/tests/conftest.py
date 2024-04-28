@@ -7,8 +7,12 @@ from .factories import (
     BrandsFactory,
     ProductCategoryFactory,
 )
+from location.tests.factories import LocationFactory
 import pytest
-from datetime import date
+from django.forms import formset_factory
+from ..forms import PurchaseItemFormSet
+from ..models import PurchaseItem
+
 
 register(PurchaseItemFactory)
 register(BarInventoryItemFactory)
@@ -16,6 +20,7 @@ register(BarInventoryProductFactory)
 register(PurchaseFactory)
 register(ProductCategoryFactory)
 register(BrandsFactory)
+register(LocationFactory)
 
 
 @pytest.fixture
@@ -25,14 +30,15 @@ def new_purchase_item(db, purchase_item_factory):
 
 
 @pytest.fixture
-def new_purchase_with_items(db, purchase_factory):
-    purchase = purchase_factory.build(with_purchase_items=True)
-    return purchase
+def new_purchase_with_item(db, purchase_factory):
+    purchase = purchase_factory.create(with_purchase_items=True)
+    purchase_item = PurchaseItemFactory.create(purchase=purchase)
+    return {"purchase": purchase, "purchase_item": purchase_item}
 
 
 @pytest.fixture
 def new_purchase(db, purchase_factory):
-    purchase = purchase_factory.build()
+    purchase = purchase_factory.create()
     return purchase
 
 
@@ -61,5 +67,26 @@ def new_bar_inventory_product(db, bar_inventory_product_factory):
 
 
 @pytest.fixture
-def new_purchase_form(db):
+def new_purchase_form():
     return {"name": "Purchase A", "date_purchased": "11/11/2023"}
+
+
+@pytest.fixture
+def new_purchase_item_form_set(db, location_factory, bar_inventory_product_factory):
+
+    location = location_factory.build()
+    product = bar_inventory_product_factory.build()
+    data = {
+        "form-TOTAL_FORMS": "2",
+        "form-INITIAL_FORMS": "1",
+        "form-0-product": product,
+        "form-0-quantity": "1",
+        "form-0-purchase_price": "1",
+        "form-0-location": location,
+        "form-1-product": product,
+        "form-1-quantity": "1",
+        "form-1-purchase_price": "1",
+        "form-1-location": location,
+    }
+    form_set = PurchaseItemFormSet(data)
+    return form_set
