@@ -1,3 +1,6 @@
+import pytest
+
+
 def test_new_purchase_item(new_purchase_item):
     print(new_purchase_item.product)
     if new_purchase_item.quantity > 0 and "Product" in new_purchase_item.product.name:
@@ -6,10 +9,12 @@ def test_new_purchase_item(new_purchase_item):
         assert False
 
 
-# how to check the items
-def test_new_purchase_with_items(new_purchase_with_items):
-    print(new_purchase_with_items)
-    if "Purchase" in new_purchase_with_items.name:
+def test_new_purchase_with_item(new_purchase_with_item):
+    print(new_purchase_with_item["purchase"])
+    if (
+        "Purchase" in new_purchase_with_item["purchase"].name
+        and "Product" in new_purchase_with_item["purchase_item"].product.name
+    ):
         assert True
     else:
         assert False

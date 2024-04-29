@@ -4,7 +4,7 @@ from .models import (
     BarInventoryProduct,
     Purchase,
     PurchaseItem,
-    Brands,
+    Brand,
     ProductCategory,
 )
 
@@ -41,14 +41,8 @@ class PurchaseForm(forms.ModelForm):
         model = Purchase
         fields = [
             "name",
+            "date_purchased",
         ]
-
-
-class PurchaseItemForm(forms.ModelForm):
-
-    class Meta:
-        model = PurchaseItem
-        fields = ["product", "date_purchased", "purchase_price", "purchase"]
         widgets = {
             "date_purchased": forms.DateInput(
                 format=("%Y-%m-%d"),
@@ -61,10 +55,28 @@ class PurchaseItemForm(forms.ModelForm):
         }
 
 
+class PurchaseItemForm(forms.ModelForm):
+
+    class Meta:
+        model = PurchaseItem
+        fields = [
+            "product",
+            "purchase_price",
+            "purchase",
+            "location",
+        ]
+
+
 PurchaseItemFormSet = forms.inlineformset_factory(
     Purchase,
     PurchaseItem,
-    fields=("__all__"),
+    fields=(
+        "purchase",
+        "product",
+        "quantity",
+        "purchase_price",
+        "location",
+    ),
     form=PurchaseItemForm,
     extra=3,
     min_num=1,
@@ -73,7 +85,7 @@ PurchaseItemFormSet = forms.inlineformset_factory(
 
 class BrandsForm(forms.ModelForm):
     class Meta:
-        model = Brands
+        model = Brand
         fields = [
             "name",
         ]

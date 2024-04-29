@@ -21,8 +21,8 @@
         {% if user.is_authenticated %}
         <li><a>Profile</a></li>
         {% if user.is_staff %}
-        <li><a href="{% url 'inventory:item_create_form' %}">Inventory</a></li>
-        <li><a href="{% url 'inventory:product_create_form' %}">Product</a></li>
+        <li><a href="{% url 'inventory:items_create' %}">Inventory</a></li>
+        <li><a href="{% url 'inventory:products_create' %}">Product</a></li>
         <li><a href="{% url 'inventory:purchases' %}">Payments</a></li>
         <li><a href="{% url 'inventory:brands' %}">Brands</a></li>
         <li><a href="{% url 'inventory:categories' %}">Categories</a></li>

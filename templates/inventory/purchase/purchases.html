@@ -1,0 +1,33 @@
+{% extends "_base.html" %}
+{% block title %}
+    Purchases
+{% endblock title %}
+{% load static %}
+{% block content %}
+    <h2>Purchases</h2>
+    {% if purchase_list %}
+        <table>
+            {% for purchase in purchase_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'inventory:purchases_item_edit' pk=purchase.pk %}">{{ purchase.name }}</a>
+                    </td>
+                    <td>
+                        {% if not purchase.delivered %}
+                            <form method="post"
+                                  action="{% url 'inventory:purchases_deliver' purchase.pk %}">
+                                {% csrf_token %}
+                                <button type="submit">Deliver</button>
+                            </form>
+                        {% else %}
+                            <p>Delivered</p>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+    {% else %}
+        <p>No Purchases</p>
+    {% endif %}
+    <a href="{% url 'inventory:purchases_create' %}" role="button">Add A Purchase</a>
+{% endblock content %}
