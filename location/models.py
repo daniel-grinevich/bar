@@ -10,7 +10,11 @@ class Location(models.Model):
 
     def save(self, *args, **kwargs):
         if self.default:
-            # Select all other default locations and set them to not be the default
+            """
+            Select all other default locations and set them to not be the default
+            The default location will be the one that prepopulates
+            the reservation dashboard.
+            """
             Location.objects.filter(default=True).update(default=False)
         super(Location, self).save(*args, **kwargs)
 

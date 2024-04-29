@@ -139,3 +139,20 @@ input[type="date"] {
     font-family:var(--fs-three-font);
     color: var(--primary-color);
 }
+.toolbar {
+    cursor: pointer;
+    position: absolute;
+    display: flex;
+    left: 0;
+    top: calc(50% - (137px / 2));
+    flex-direction: row;
+    background: #1E1E1E;
+    padding: 1rem;
+    color: #FFF;
+    gap: 1rem;
+}
+.options.hidden {
+    display: none;
+}
+
+

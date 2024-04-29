@@ -10,7 +10,7 @@
 <div class="app">
     <div class="sidebar">
         <div class="location">
-            <select id= "locationSelector" name="locationSelector" class="location-selector" hx-get="{% url 'reservation:dashboard' %}" hx-trigger="change" hx-target="#reservation-list" hx-include="#dateInput, #reservationStatus">
+            <select id="locationSelector" name="locationSelector" class="location-selector" hx-get="{% url 'reservation:dashboard' %}" hx-trigger="change" hx-target="#reservation-list" hx-include="#dateInput, #reservationStatus">
                 {% for l in locations %}
                     <option value="{{ l.name }}">{{ l.name }}</option>
                 {% endfor %}
@@ -26,15 +26,13 @@
                 {% for r in reservations %}
                     <div class="reservation-item">
                         <div class="status">
-                            
+            
                         </div>
                         <div class="details">
                             <p>Party Size: {{ r.number_of_people }}</p>
                             <p>{{ r.start_time }}</p>
                             <h6>{{ r.custom_user }}</h6>
                         </div>
-
-                        
                         <div class="info">
                             <p>{{ r.table.name }}</p>
                             <p>{{ r.status }}</p>
@@ -66,7 +64,21 @@
         <div class="time-selector" id="slider-container" hx-trigger="change" hx-target="#reservation-list" hx-get="{% url 'reservation:dashboard' %}" hx-include="#reservationStatus, #locationSelector, #dateInput, #time-slider">
             <input type="range" id="time-slider" name="timeInput" min="0" max="1439" value="480" step="15">
             <span id="time-display">08:00 AM</span>
-        </div>        
+        </div>   
+        <div class="toolbar">
+            <div class="tools">
+                <p id="drag-tool">+Drag</p>
+                <p id="table-create">+Table</p>
+                <p id="location-create">+Location</p>
+            </div>
+            <div class="options hidden">
+                <div class="table-options">
+                    <p id="round-table">Round Table</p>
+                    <p id="hightop-table">Hightop Table</p>
+                    <p id="bar-table">Bar Table</p>
+                </div>
+            </div>
+        </div> 
     </div>  
 </div>
 {% endblock content %}

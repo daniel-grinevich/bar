@@ -1,6 +1,6 @@
 # Inside your reservations app, forms.py
 from django import forms
-from .models import Reservation
+from .models import Reservation, Event
 
 
 class CustomerReservationForm(forms.ModelForm):
@@ -31,3 +31,9 @@ class ReservationForm(forms.ModelForm):
             "location",
             "table",
         ]  # Specify the fields you want in the form
+
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = ["name", "cover"]
