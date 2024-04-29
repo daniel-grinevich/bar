@@ -13,6 +13,12 @@ def new_event(db, event_factory):
 
 
 @pytest.fixture
+def new_reservation(db, reservation_factory):
+    reservation = reservation_factory.build()
+    return reservation
+
+
+@pytest.fixture
 def new_reservations(db, reservation_factory):
     reservation_list = []
     for i in range(0, 50):

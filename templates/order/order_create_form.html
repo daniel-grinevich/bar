@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block title %}
+    Order
+{% endblock title %}
+{% load static %}
+{% block content %}
+    <h1>Create Order</h1>
+    <form id="order-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </form>
+{% endblock content %}
