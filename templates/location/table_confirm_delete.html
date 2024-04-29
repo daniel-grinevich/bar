@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% block title %}Delete Table{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+<h1>Delete Table</h1>
+<p>Are you sure you want to delete "{{ table.name }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+</form>
+{% endblock content %}

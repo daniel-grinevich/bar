@@ -1,8 +1,16 @@
 from django.shortcuts import render, redirect
-from .forms import ReservationForm
-from .models import Reservation
-from django.views.generic import CreateView, UpdateView, TemplateView
+from .forms import ReservationForm, EventForm
+from .models import Reservation, Event
+from django.views.generic import (
+    CreateView,
+    ListView,
+    DeleteView,
+    DetailView,
+    UpdateView,
+    TemplateView,
+)
 from .mixins import ReservationMixin
+from django.urls import reverse_lazy
 
 
 # Create your views here.
@@ -48,7 +56,64 @@ class DashboardView(ReservationMixin, TemplateView):
 class CreateReservation(CreateView):
     model = Reservation
     form_class = ReservationForm
+    template_name = "reservation/reservation_create_form.html"
+    success_url = reverse_lazy("reservation_list")  # Redirect after successful creation
 
 
 class UpdateReservation(UpdateView):
     model = Reservation
+    form_class = ReservationForm
+    template_name = "reservation/reservation_update_form.html"
+    success_url = reverse_lazy(
+        "reservation_detail"
+    )  # Adjust to include primary key or correct redirection
+
+
+class ReservationListView(ListView):
+    model = Reservation
+    template_name = "reservation/reservation_list.html"
+    context_object_name = "reservations"
+
+
+class ReservationDetailView(DetailView):
+    model = Reservation
+    template_name = "reservation/reservation_detail.html"
+
+
+class DeleteReservation(DeleteView):
+    model = Reservation
+    template_name = "reservation/reservation_confirm_delete.html"
+    success_url = reverse_lazy("reservation_list")
+
+
+class CreateEvent(CreateView):
+    model = Event
+    form_class = EventForm
+    template_name = "reservation/event_create_form.html"
+    success_url = reverse_lazy("event_list")  # Redirect after successful creation
+
+
+class UpdateEvent(UpdateView):
+    model = Event
+    form_class = EventForm
+    template_name = "reservation/event_update_form.html"
+    success_url = reverse_lazy(
+        "event_detail"
+    )  # Adjust to include primary key or correct redirection
+
+
+class EventListView(ListView):
+    model = Event
+    template_name = "reservation/event_list.html"
+    context_object_name = "events"
+
+
+class EventDetailView(DetailView):
+    model = Event
+    template_name = "reservation/event_detail.html"
+
+
+class DeleteEvent(DeleteView):
+    model = Event
+    template_name = "reservation/event_confirm_delete.html"
+    success_url = reverse_lazy("event_list")

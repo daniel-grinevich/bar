@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+
+{% block title %}Table Detail{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+    <h1>{{ table.name }}</h1>
+    <p>Details for {{ table.name }}</p>
+    <a href="{% url 'location:table_update' table.pk %}">Edit</a> 
+    <a href="{% url 'location:table_delete' table.pk %}">Delete</a>
+{% endblock content %}

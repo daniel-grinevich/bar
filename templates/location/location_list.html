@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% block title %}Locations{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+<h1>Locations</h1>
+<ul>
+    {% for location in locations %}
+    <li><a href="{% url 'location:location_detail' location.pk %}">{{ location.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock content %}

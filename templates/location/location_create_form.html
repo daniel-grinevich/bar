@@ -1,0 +1,12 @@
+{% extends "_base.html" %} 
+
+{% block title %}Location{% endblock title %} 
+{% load static %}
+
+{% block content %}
+<h1>Create Location</h1>
+<form id="event-form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+</form>
+{% endblock content %}

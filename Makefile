@@ -20,6 +20,8 @@ migrate:
 	docker compose exec web python3 manage.py migrate --noinput
 makemigrations:
 	docker compose exec web python3 manage.py makemigrations
+user_makemigrations:
+	docker compose exec web python3 manage.py makemigrations users
 startapp:
 	docker compose exec web python manage.py startapp $(name)
 test:

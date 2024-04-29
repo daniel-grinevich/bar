@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% block title %}Tables{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+<h1>Tables</h1>
+<ul>
+    {% for table in tables %}
+    <li><a href="{% url 'location:table_detail' table.pk %}">{{ table.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock content %}
