@@ -83,7 +83,7 @@ PurchaseItemFormSet = forms.inlineformset_factory(
 )
 
 
-class BrandsForm(forms.ModelForm):
+class BrandForm(forms.ModelForm):
     class Meta:
         model = Brand
         fields = [

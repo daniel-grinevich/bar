@@ -13,12 +13,14 @@ urlpatterns = [
     path(
         "products/create/",
         views.BarInventoryProductCreateView.as_view(),
-        name="products_create",
+        name="inventory_product_create",
     ),
     # InventoryItems
     path("items/", views.BarInventoryItemListView.as_view(), name="inventory_items"),
     path(
-        "items/create/", views.BarInventoryItemCreateView.as_view(), name="items_create"
+        "items/create/",
+        views.BarInventoryItemCreateView.as_view(),
+        name="inventory_item_create",
     ),
     # Purchases
     path("purchases/", views.PurchaseListView.as_view(), name="purchases"),
@@ -42,7 +44,7 @@ urlpatterns = [
     ),
     # Brands
     path("brands/", views.BrandsListView.as_view(), name="brands"),
-    path("brands/create/", views.BrandsCreateView.as_view(), name="brands_create"),
+    path("brands/create/", views.BrandCreateView.as_view(), name="brands_create"),
     # Categories
     path("categories/", views.ProductCategoryListView.as_view(), name="categories"),
     path(

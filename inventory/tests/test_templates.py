@@ -8,7 +8,10 @@ import pytest
     "url_name,template",
     [
         ("inventory:inventory_items", "inventory/item/bar_inventory_items.html"),
-        ("inventory:items_create", "inventory/item/bar_inventory_item_form.html"),
+        (
+            "inventory:inventory_item_create",
+            "inventory/item/bar_inventory_item_form.html",
+        ),
         ("inventory:purchases", "inventory/purchase/purchases.html"),
         ("inventory:purchases_create", "inventory/purchase/purchase_form.html"),
         ("inventory:brands", "inventory/brand/brands.html"),

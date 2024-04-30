@@ -4,7 +4,7 @@ from .forms import (
     BarInventoryItemForm,
     BarInventoryProductForm,
     PurchaseItemFormSet,
-    BrandsForm,
+    BrandForm,
     ProductCategoryForm,
     PurchaseForm,
 )
@@ -93,7 +93,6 @@ def deliverPurchase(request, pk):
     purchase = Purchase.objects.get(pk=pk)
     purchase.delivered = True
     purchase.save()
-
     return HttpResponseRedirect(reverse("inventory:purchases"))
 
 
@@ -130,9 +129,9 @@ class BrandsListView(ListView):
     template_name = "inventory/brand/brands.html"
 
 
-class BrandsCreateView(CreateView):
+class BrandCreateView(CreateView):
     model = Brand
-    form_class = BrandsForm
+    form_class = BrandForm
     template_name = "inventory/brand/brand_form.html"
 
     def get_success_url(self):
