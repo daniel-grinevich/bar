@@ -30,3 +30,5 @@ test_verbose:
 	docker compose exec web pytest -rP $(ARGS)
 reservation_dummy_data:
 	docker compose exec web python manage.py populate_dummy_reservation
+superuser:
+	docker compose exec web python manage.py createsuperuser

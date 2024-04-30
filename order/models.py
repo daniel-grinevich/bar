@@ -12,7 +12,7 @@ class Order(models.Model):
     )
     customer = models.CharField(max_length=255, blank=True, null=True)
     items = models.ManyToManyField("recipe.MenuItem", through="OrderItem")
-    total = models.FloatField()
+    total = models.FloatField(default=0)
     tip = models.FloatField(default=0)
     date_time = models.DateTimeField(default=timezone.now)
     reservation = models.ForeignKey(

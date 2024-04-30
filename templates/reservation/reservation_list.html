@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% block title %}Reservations{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+<h1>Reservations</h1>
+<ul>
+    {% for reservation in reservations %}
+    <li><a href="{% url 'reservation:reservation_detail' reservation.pk %}">{{ reservation.reservation_detail }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock content %}
