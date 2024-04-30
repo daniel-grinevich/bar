@@ -1,0 +1,11 @@
+{% extends "_base.html" %}
+
+{% block title %}Reservation Detail{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+<h1>{{ reservation.reservation_detail }}</h1>
+<a href="{% url 'reservation:reservation_update' reservation.pk %}">Edit</a> |
+<a href="{% url 'reservation:reservation_delete' reservation.pk %}">Delete</a>
+{% endblock content %}

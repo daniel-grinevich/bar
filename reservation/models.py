@@ -23,12 +23,14 @@ SOURCE_CHOICES = (
 
 
 class Reservation(models.Model):
-    event = models.ForeignKey("Event", on_delete=models.CASCADE)
+    event = models.ForeignKey("Event", on_delete=models.CASCADE, null=True, blank=True)
     number_of_people = models.IntegerField(default=1)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     date = models.DateField()
-    custom_user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE)
+    custom_user = models.ForeignKey(
+        "users.CustomUser", on_delete=models.CASCADE, null=True, blank=True
+    )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
     location = models.ForeignKey("location.Location", on_delete=models.CASCADE)
     table = models.ForeignKey("location.Table", on_delete=models.CASCADE)
@@ -103,6 +105,9 @@ class Reservation(models.Model):
                 status=status,
                 start_time__gt=time,
             )
+
+    def reservation_detail(self):
+        return f"Location: {self.location.name} Table: {self.table.name} Ppl: {self.number_of_people}"
 
     class Meta:
         ordering = ["-date", "-start_time"]
