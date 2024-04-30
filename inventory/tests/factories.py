@@ -11,13 +11,13 @@ from ..models import (
     PurchaseItem,
     BarInventoryItem,
 )
-from location.tests.factories import TableFactory, LocationFactory
+from location.tests.factories import LocationFactory
 from users.tests.factories import CustomUserFactory
 
 fake = Faker()
 
 
-class BrandsFactory(factory.django.DjangoModelFactory):
+class BrandFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Brand
 
@@ -64,7 +64,7 @@ class BarInventoryProductFactory(factory.django.DjangoModelFactory):
     category = factory.SubFactory(ProductCategoryFactory)
     size = factory.LazyAttribute(lambda obj: random.randint(1, 750))
     refridgerated = False
-    brand = factory.SubFactory(BrandsFactory)
+    brand = factory.SubFactory(BrandFactory)
     par_level = factory.LazyAttribute(lambda obj: random.randint(1, 100))
     quantity = factory.LazyAttribute(lambda obj: random.randint(1, 100))
     location = factory.SubFactory(LocationFactory)
