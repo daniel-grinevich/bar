@@ -1,5 +1,5 @@
 from django.urls import reverse
-from pytest_django.asserts import assertRedirects, assertTemplateUsed
+from pytest_django.asserts import assertTemplateUsed
 import pytest
 
 

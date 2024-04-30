@@ -37,7 +37,7 @@ def new_purchase_item(db, purchase_item_factory):
     return purchase_item
 
 
-@pytest.fixture
+@pytest.fixture()
 def new_purchase_with_item(db, purchase_factory):
     purchase = purchase_factory.create(with_purchase_items=True)
     purchase_item = PurchaseItemFactory.create(purchase=purchase)

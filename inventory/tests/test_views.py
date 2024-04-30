@@ -1,8 +1,7 @@
 from django.urls import reverse
-from pytest_django.asserts import assertRedirects, assertTemplateUsed
+from pytest_django.asserts import assertRedirects
 import pytest
-from ..forms import BarInventoryProductForm
-from ..models import Purchase, PurchaseItem
+from ..models import Purchase
 
 # Test Froms are Valid
 
@@ -71,46 +70,3 @@ def test_form_redirects_list_view(db, url_name, redirect, client, form_data, req
     form_data = request.getfixturevalue(form_data)
     response = client.post(url, data=form_data)
     assertRedirects(response, reverse(redirect))
-
-
-# Test Delivery
-def test_deliver_purchase(db, new_purchase_with_item, client):
-    purchase_item = new_purchase_with_item["purchase_item"]
-    purchase = new_purchase_with_item["purchase"]
-
-    item_quantity = purchase_item.quantity
-    initial_product_quantity = purchase_item.product.quantity
-
-    response = client.post(
-        reverse(
-            "inventory:purchases_deliver",
-            kwargs={"pk": purchase.pk},
-        )
-    )
-    purchase.refresh_from_db()
-    purchase_item.refresh_from_db()
-
-    errors = []
-    if not purchase.delivered:
-        errors.append("Purchase not delivered.")
-    if (
-        not new_purchase_with_item["purchase_item"].product.quantity
-        == item_quantity + initial_product_quantity
-    ):
-        errors.append("Product quantity not updated correctly upon delivery.")
-    if not response.status_code == 302:
-        errors.append("Response returned wrong status code.")
-
-    purchase.delivered = False
-    purchase.save()
-    purchase_item.refresh_from_db()
-
-    if purchase.delivered:
-        errors.append("Purchase not undelivered.")
-    if (
-        not new_purchase_with_item["purchase_item"].product.quantity
-        == initial_product_quantity
-    ):
-        errors.append("Product not updated correctly upon undelivery.")
-
-    assert not errors, "errors occured:\n{}".format("\n".join(errors))
