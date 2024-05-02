@@ -20,8 +20,7 @@ class DeliveryTest:
         self.initial_product_quantity = self.product.quantity
 
     def test_deliver_purchase(self, client):
-        pk = self.purchase.pk
-        response = self.deliver_purchase(pk, client)
+        response = self.deliver_purchase(self.purchase.pk, client)
         self.purchase.refresh_from_db()
         self.purchase_item.refresh_from_db()
         self.product.refresh_from_db()

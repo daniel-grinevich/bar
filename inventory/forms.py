@@ -60,9 +60,10 @@ class PurchaseItemForm(forms.ModelForm):
     class Meta:
         model = PurchaseItem
         fields = [
-            "product",
-            "purchase_price",
             "purchase",
+            "product",
+            "quantity",
+            "purchase_price",
             "location",
         ]
 
