@@ -113,7 +113,6 @@ class PurchaseItemEditView(SingleObjectMixin, FormView):
         return PurchaseItemFormSet(**self.get_form_kwargs(), instance=self.object)
 
     def form_valid(self, form):
-
         form.save()
 
         messages.add_message(self.request, messages.SUCCESS, "Changes were saved")

@@ -89,24 +89,46 @@ def new_purchase_form_data():
 
 
 @pytest.fixture
-def new_purchase_item_form_set(db, location_factory, bar_inventory_product_factory):
-
-    location = location_factory.build()
-    product = bar_inventory_product_factory.build()
-    data = {
-        "form-TOTAL_FORMS": "2",
-        "form-INITIAL_FORMS": "1",
-        "form-0-product": product.pk,
-        "form-0-quantity": 1,
-        "form-0-purchase_price": 1,
-        "form-0-location": location.pk,
-        "form-1-product": product.pk,
-        "form-1-quantity": 1,
-        "form-1-purchase_price": 1,
-        "form-1-location": location.pk,
-    }
+def new_purchase_item_form_set(
+    db, location_factory, bar_inventory_product_factory, purchase_factory
+):
+    data = get_purchase_item_form_data(
+        location_factory, bar_inventory_product_factory, purchase_factory
+    )
     form_set = PurchaseItemFormSet(data)
     return form_set
+
+
+@pytest.fixture
+def new_purchase_item_form_set_data(
+    db, location_factory, bar_inventory_product_factory, purchase_factory
+):
+    return get_purchase_item_form_data(
+        location_factory, bar_inventory_product_factory, purchase_factory
+    )
+
+
+def get_purchase_item_form_data(
+    location_factory, bar_inventory_product_factory, purchase_factory
+):
+    location = location_factory.create()
+    product = bar_inventory_product_factory.create()
+    # purchase = purchase_factory.create()
+    # "form-0-purchase": purchase.pk,
+    return {
+        "purchaseitem_set-TOTAL_FORMS": "2",
+        "purchaseitem_set-INITIAL_FORMS": "0",
+        "purchaseitem_set-MIN_NUM_FORMS": "1",
+        "purchaseitem_set-MAX_NUM_FORMS": "1000",
+        "purchaseitem_set-0-product": product.pk,
+        "purchaseitem_set-0-quantity": "1",
+        "purchaseitem_set-0-purchase_price": "1",
+        "purchaseitem_set-0-location": location.pk,
+        "purchaseitem_set-1-product": product.pk,
+        "purchaseitem_set-1-quantity": "1",
+        "purchaseitem_set-1-purchase_price": "1",
+        "purchaseitem_set-1-location": location.pk,
+    }
 
 
 @pytest.fixture
