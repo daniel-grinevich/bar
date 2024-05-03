@@ -64,10 +64,10 @@ class MenuDetailView(DetailView):
 class MenuCreateView(CreateView):
     model = Menu
     form_class = MenuForm
-    template_name = "menus/menu_form.html"
+    template_name = "recipe/menu_create_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("menu_detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("recipe:menu_detail", kwargs={"pk": self.object.pk})
 
 
 class MenuUpdateView(UpdateView):
@@ -87,28 +87,29 @@ class MenuDeleteView(DeleteView):
 
 class MenuItemListView(ListView):
     model = MenuItem
-    template_name = "menu_items/menu_item_list.html"
+    template_name = "recipe/menu_item_list.html"
     context_object_name = "menu_items"
+    paginate_by = 16
 
 
 class MenuItemDetailView(DetailView):
     model = MenuItem
-    template_name = "menu_items/menu_item_detail.html"
+    template_name = "recipe/menu_item_detail.html"
 
 
 class MenuItemCreateView(CreateView):
     model = MenuItem
     form_class = MenuItemForm
-    template_name = "menu_items/menu_item_form.html"
+    template_name = "recipe/menu_item_create_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("menu_item_detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("recipe:menu_item_detail", kwargs={"pk": self.object.pk})
 
 
 class MenuItemUpdateView(UpdateView):
     model = MenuItem
     form_class = MenuItemForm
-    template_name = "menu_items/menu_item_form.html"
+    template_name = "recipe/menu_item_form.html"
 
     def get_success_url(self):
         return reverse_lazy("menu_item_detail", kwargs={"pk": self.object.pk})
@@ -116,7 +117,7 @@ class MenuItemUpdateView(UpdateView):
 
 class MenuItemDeleteView(DeleteView):
     model = MenuItem
-    template_name = "menu_items/menu_item_confirm_delete.html"
+    template_name = "recipe/menu_item_confirm_delete.html"
     success_url = reverse_lazy("menu_item_list")
 
 
