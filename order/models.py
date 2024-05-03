@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from recipe.models import MenuItem
 
 
 # Create your models here.
@@ -11,12 +12,15 @@ class Order(models.Model):
         blank=True,
     )
     customer = models.CharField(max_length=255, blank=True, null=True)
-    items = models.ManyToManyField("recipe.MenuItem", through="OrderItem")
     total = models.FloatField(default=0)
     tip = models.FloatField(default=0)
     date_time = models.DateTimeField(default=timezone.now)
     reservation = models.ForeignKey(
-        "reservation.Reservation", on_delete=models.CASCADE, related_name="orders"
+        "reservation.Reservation",
+        on_delete=models.CASCADE,
+        related_name="orders",
+        null=True,
+        blank=True,
     )
     PLACED = "placed"
     PREPARING = "preparing"
@@ -38,6 +42,10 @@ class Order(models.Model):
             self.customer = self.custom_user.name
         super(Order, self).save(*args, **kwargs)
 
+    @classmethod
+    def get_orders_by_status(cls, status):
+        return cls.objects.filter(status=status)
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -46,6 +54,10 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.item.name} for Order {self.order.id}"
+
+    @classmethod
+    def get_total_price(cls):
+        MenuItem.objects.filter(item=cls)
 
 
 class Payment(models.Model):

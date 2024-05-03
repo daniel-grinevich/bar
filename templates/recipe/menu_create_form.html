@@ -1,13 +1,13 @@
 {% extends "_base.html" %}
 {% block title %}
-    Update Reservation
+    Menu
 {% endblock title %}
 {% load static %}
 {% block content %}
-    <h1>Update Reservation</h1>
-    <form method="post">
+    <h1>Create Menu</h1>
+    <form id="menu-form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Update</button>
+        <button class="submit">Submit</button>
     </form>
 {% endblock content %}

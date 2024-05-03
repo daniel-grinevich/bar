@@ -1,0 +1,10 @@
+{% extends "_base.html" %}
+{% block title %}
+    Menu Item Detail
+{% endblock title %}
+{% load static %}
+{% block content %}
+    <h1>{{ menuitem.price }}</h1>
+    <a href="{% url 'recipe:menu_item_update' menuitem.pk %}">Edit</a>
+    <a href="{% url 'recipe:menu_item_delete' menuitem.pk %}">Delete</a>
+{% endblock content %}
