@@ -3,7 +3,28 @@ from django.utils import timezone
 from recipe.models import MenuItem
 
 
-# Create your models here.
+class Equipment(models.Model):
+    active = models.BooleanField(default=True)
+    name = models.CharField(max_length=100, blank=False, null=False)
+
+
+class Ticket(models.Model):
+    equipment = models.ForeignKey(
+        "Equipment", on_delete=models.CASCADE, null=True, blank=True
+    )
+    PLACED = "placed"
+    PREPARING = "preparing"
+    COMPLETED = "completed"
+    CANCELED = "canceled"
+    STATUS_CHOICES = [
+        (PLACED, "Placed"),
+        (PREPARING, "Preparing"),
+        (COMPLETED, "completed"),
+        (CANCELED, "Canceled"),
+    ]
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PLACED)
+
+
 class Order(models.Model):
     custom_user = models.ForeignKey(
         "users.CustomUser",
@@ -23,14 +44,16 @@ class Order(models.Model):
         blank=True,
     )
     PLACED = "placed"
-    PREPARING = "preparing"
     COMPLETED = "completed"
     CANCELED = "canceled"
+    REFUNDED = "refunded"
+    FAILED = "failed"
     STATUS_CHOICES = [
         (PLACED, "Placed"),
-        (PREPARING, "Preparing"),
-        (COMPLETED, "completed"),
+        (COMPLETED, "Completed"),
         (CANCELED, "Canceled"),
+        (REFUNDED, "Refunded"),
+        (FAILED, "Failed"),
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PLACED)
 
@@ -48,7 +71,7 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
     item = models.ForeignKey("recipe.MenuItem", on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 

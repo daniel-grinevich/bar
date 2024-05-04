@@ -2,7 +2,12 @@ import pytest
 from django.test import TestCase
 from .factories import OrderFactory, OrderItemFactory
 from reservation.tests.factories import ReservationFactory
+from recipe.tests.factories import MenuItemFactory
 from ..models import Order
+import random
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 def test_create_order(new_order):
@@ -63,6 +68,13 @@ class OrderTest(TestCase):
         self.order = OrderFactory(
             customer="Daniel Grinevich", total=32.00, tip=5.00, status="placed"
         )
+        self.menu_items = [MenuItemFactory() for _ in range(10)]
+        self.order_items = [
+            OrderItemFactory(
+                order=self.order, item=self.menu_items[random.randint(0, 9)]
+            )
+            for _ in range(5)
+        ]
 
     def test_object_creation(self):
         self.assertEqual(self.order.customer, "Daniel Grinevich")
@@ -80,7 +92,24 @@ class OrderTest(TestCase):
         placed_orders = Order.get_orders_by_status("placed")
         self.assertTrue("placed" == placed_orders[0].status)
 
+    def test_set_order_total(self):
+        self.order.set_order_total()
+
 
 class OrderItem(TestCase):
     def setUp(self):
         self.order_item = OrderItemFactory()
+
+    def test_model_relationship(self):
+        reservation = ReservationFactory()
+        menu_items = [MenuItemFactory() for _ in range(10)]
+        order = OrderFactory(reservation=reservation)
+        order_items = [
+            OrderItemFactory(order=order, item=menu_items[random.randint(0, 9)])
+            for _ in range(5)
+        ]
+
+        test_query = order.orderitem_set.all()
+
+        self.assertTrue(order_items[0].order, order)
+        self.assertTrue(len(test_query), len(order_items))
