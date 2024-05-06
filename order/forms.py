@@ -16,23 +16,8 @@ class OrderItemForm(forms.ModelForm):
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ["equipment", "status"]
+        fields = ["equipment", "status", "reservation"]
 
-
-# PurchaseItemFormSet = forms.inlineformset_factory(
-#     Purchase,
-#     PurchaseItem,
-#     fields=(
-#         "purchase",
-#         "product",
-#         "quantity",
-#         "purchase_price",
-#         "location",
-#     ),
-#     form=PurchaseItemForm,
-#     extra=3,
-#     min_num=1,
-# )
 
 OrderItemFormSet = inlineformset_factory(
     Ticket,
@@ -52,6 +37,5 @@ class OrderForm(forms.ModelForm):
             "total",
             "tip",
             "date_time",
-            "reservation",
             "status",
         ]

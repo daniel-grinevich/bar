@@ -1,8 +1,8 @@
 from django.urls import path
 from .views import (
     DashboardView,
-    CreateReservation,
-    UpdateReservation,
+    ReservationCreateView,
+    ReservationUpdateView,
     ReservationListView,
     ReservationDetailView,
     DeleteReservation,
@@ -19,7 +19,9 @@ urlpatterns = [
     path("", DashboardView.as_view(), name="dashboard"),
     path("reservations/", ReservationListView.as_view(), name="reservation_list"),
     path(
-        "reservations/create/", CreateReservation.as_view(), name="reservation_create"
+        "reservations/create/",
+        ReservationCreateView.as_view(),
+        name="reservation_create",
     ),
     path(
         "reservations/<int:pk>/",
@@ -28,7 +30,7 @@ urlpatterns = [
     ),
     path(
         "reservations/<int:pk>/update/",
-        UpdateReservation.as_view(),
+        ReservationUpdateView.as_view(),
         name="reservation_update",
     ),
     path(
