@@ -33,16 +33,16 @@ urlpatterns = [
     path("menus/<int:pk>/update/", MenuUpdateView.as_view(), name="menu_update"),
     path("menus/<int:pk>/delete/", MenuDeleteView.as_view(), name="menu_delete"),
     # MenuItem URLs
-    path("menu-items/", MenuItemListView.as_view(), name="menu_item_list"),
-    path("menu-items/<int:pk>/", MenuItemDetailView.as_view(), name="menu_item_detail"),
-    path("menu-items/create/", MenuItemCreateView.as_view(), name="menu_item_create"),
+    path("menuitems/", MenuItemListView.as_view(), name="menu_item_list"),
+    path("menuitems/<int:pk>/", MenuItemDetailView.as_view(), name="menu_item_detail"),
+    path("menuitems/create/", MenuItemCreateView.as_view(), name="menu_item_create"),
     path(
-        "menu-items/<int:pk>/update/",
+        "menuitems/<int:pk>/update/",
         MenuItemUpdateView.as_view(),
         name="menu_item_update",
     ),
     path(
-        "menu-items/<int:pk>/delete/",
+        "menuitems/<int:pk>/delete/",
         MenuItemDeleteView.as_view(),
         name="menu_item_delete",
     ),

@@ -1,0 +1,69 @@
+/* Basic reset for the table */
+
+.recipe-container {
+    margin: 2rem;
+}
+.recipe-container table {
+    width: 100%;
+    border-collapse: collapse; /* Ensures borders between cells are merged */
+    margin-top: 20px; /* Spacing above the table */
+}
+
+/* Styling table headers */
+.recipe-container th {
+    background-color: #f4f4f4; /* Light grey background for headers */
+    border-bottom: 2px solid #ddd; /* Light grey border below headers */
+    padding: 12px 15px; /* Padding inside header cells */
+    text-align: left; /* Aligning text to the left */
+    font-size: 1rem;
+}
+
+/* Styling table cells */
+.recipe-container td {
+    border-bottom: 1px solid #ddd; /* Light grey border for each cell */
+    padding: 8px 15px; /* Padding inside cells */
+    font-size: 14px; /* Font size for cell content */
+}
+
+/* Styling the rows on hover to enhance interactivity */
+.recipe-container tr:hover {
+    background-color: #f9f9f9; /* Light color when hovering over a row */
+}
+
+/* Styling for links within the table, particularly the action buttons */
+.recipe-container td a {
+    color: #007bff; /* Bootstrap default blue for links */
+    text-decoration: none; /* Removes underline from links */
+    padding: 6px 12px; /* Padding for clickable area */
+    margin-right: 5px; /* Space between multiple links */
+    background-color: #f0f0f0; /* Light background for the button */
+    border: 1px solid #ccc; /* Border to make it look like a button */
+    border-radius: 4px; /* Rounded corners for the button */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for links */
+.recipe-container td a:hover {
+    background-color: #e9ecef; /* Slightly darker background on hover */
+    border-color: #adadad; /* Darker border on hover */
+}
+.recipe-add-button {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: var(--fs-100);
+    border: 1px solid var(--fs-black);
+}
+/* Styling for the 'Create New Menu Item' button */
+.recipe-add-button a {
+    display: inline-block; /* Makes the link behave like a block, enabling padding */
+    padding: 1rem; /* Larger padding for a more button-like appearance */
+    text-decoration: none; /* Removes underline */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for the 'Create New Menu Item' button */
+.recipe-add-button a:hover {
+    background-color: var(--fs-black); /* Darker green on hover */
+    color: #FFF;
+}

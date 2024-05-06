@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Menu(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True, null=False, blank=False)
     description = models.CharField(max_length=255)
     items = models.ManyToManyField("MenuItem", related_name="menus")
 

@@ -1,13 +1,12 @@
 {% extends "_base.html" %}
 {% block title %}
-    Update Reservation
+    OrderItem
 {% endblock title %}
 {% load static %}
 {% block content %}
-    <h1>Update Reservation</h1>
-    <form method="post">
+    <h1>Create Order Item</h1>
+    <form id="orderitem-form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Update</button>
     </form>
 {% endblock content %}
