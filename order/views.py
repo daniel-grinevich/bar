@@ -1,24 +1,34 @@
+from django.shortcuts import render
 from django.views.generic import CreateView, ListView, View, TemplateView
 from .models import Order, OrderItem, Ticket
 from .forms import OrderForm, OrderItemForm, OrderItemFormSet, TicketForm
 from django.urls import reverse_lazy
 from django.http import JsonResponse
-import json
 from recipe.models import MenuItem
+from .mixins import TicketHtmxFormMixin, MenuItemMixin
 
 
 # Create your views here.
 
 
-class Dashboard(TemplateView):
-    template_name = "order/dashboard.html"
+class OrderMenuTemplateView(MenuItemMixin, TemplateView):
+    template_name = "order/order_menu.html"
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # Add in the list of all menu items
-        context["menu_items"] = MenuItem.objects.all()
+        menu_id = self.request.GET.get("menu_id")
+        if menu_id:
+            context["menu_items"] = MenuItem.objects.filter(menus__id=menu_id)
+        else:
+            context["menu_items"] = MenuItem.objects.all()
         return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if request.htmx:
+            return render(request, "order/menu_item_partial.html", context)
+        else:
+            return self.render_to_response(context)
 
 
 class OrderCreateView(CreateView):
@@ -32,8 +42,8 @@ class OrderCreateView(CreateView):
     #     # Assuming 'menu_items' are the IDs of the items selected
     #     menu_items_ids = self.request.POST.getlist('menu_items')
     #     for item_id in menu_items_ids:
-    #         menu_item = MenuItem.objects.get(id=item_id)
-    #         OrderItem.objects.create(order=self.object, menu_item=menu_item, quantity=1)
+    #       menu_item = MenuItem.objects.get(id=item_id)
+    #       OrderItem.objects.create(order=self.object, menu_item=menu_item, quantity=1)
     #     # Respond in a way suitable for HTMX (e.g., updating a part of the page)
     #     return JsonResponse({'status': 'success', 'order_id': self.object.id})
 
@@ -57,39 +67,44 @@ class OrderItemListView(ListView):
     context_object_name = "orderitems"
 
 
-class TicketCreateView(View):
+class TicketListView(ListView):
+    model = Ticket
+    tempalte_name = "order/ticket_list.html"
+    context_object_name = "tickets"
+
+
+class TicketCreateView(TicketHtmxFormMixin, View):
     template_name = "tickets/create_ticket.html"
 
     def post(self, request, *args, **kwargs):
 
         if request.htmx:
+            ticket_form = TicketForm(
+                {
+                    "status": "placed",
+                    "reservation": request.POST.get("reservation", None),
+                }
+            )
+            if ticket_form.is_valid():
 
-            menu_items = request.POST.getlist("item_id")
-            quantities = request.POST.getlist("quantity")
-
-            formset_data = {
-                "status": "placed",
-                "orderitem_set-TOTAL_FORMS": str(len(menu_items)),
-                "orderitem_set-INITIAL_FORMS": "0",
-            }
-            for i, (item_id, quantity) in enumerate(zip(menu_items, quantities)):
-                formset_data.update(
-                    {
-                        f"orderitem_set-{i}-item": item_id,
-                        f"orderitem_set-{i}-quantity": quantity,
-                    }
+                order_item_formset = OrderItemFormSet(
+                    self.setup_formset(
+                        request=request,
+                        form=TicketForm({"status": "placed"}),
+                        formset=OrderItemFormSet(),
+                        keys=["item_id", "quantity"],
+                        formset_string="orderitem_set",
+                    )
                 )
-            order_item_formset = OrderItemFormSet(formset_data)
-            ticket_form = TicketForm({"status": "placed"})
-            new_ticket = ticket_form.save(commit=False)
-            if order_item_formset.is_valid():
-                new_ticket.save()
-                instances = order_item_formset.save(commit=False)
-                for instance in instances:
-                    instance.ticket = new_ticket
-                    instance.save()
 
-        return JsonResponse({"status": "success"}, status=200)
+                if order_item_formset.is_valid():
+                    new_ticket = ticket_form.save(commit=False)
+                    instances = order_item_formset.save(commit=False)
+                    for instance in instances:
+                        instance.ticket = new_ticket
+                        instance.save()
+
+                    return JsonResponse({"status": "success"}, status=200)
 
 
 # "equipment": self.equipment.id,

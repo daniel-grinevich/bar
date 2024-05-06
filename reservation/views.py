@@ -53,14 +53,14 @@ class DashboardView(ReservationMixin, TemplateView):
         return self.get(request)
 
 
-class CreateReservation(CreateView):
+class ReservationCreateView(CreateView):
     model = Reservation
     form_class = ReservationForm
     template_name = "reservation/reservation_create_form.html"
     success_url = reverse_lazy("reservation_list")  # Redirect after successful creation
 
 
-class UpdateReservation(UpdateView):
+class ReservationUpdateView(UpdateView):
     model = Reservation
     form_class = ReservationForm
     template_name = "reservation/reservation_update_form.html"

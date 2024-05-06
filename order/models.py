@@ -23,6 +23,13 @@ class Ticket(models.Model):
         (CANCELED, "Canceled"),
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PLACED)
+    reservation = models.ForeignKey(
+        "reservation.Reservation",
+        on_delete=models.CASCADE,
+        related_name="orders",
+        null=True,
+        blank=True,
+    )
 
 
 class Order(models.Model):
@@ -36,13 +43,6 @@ class Order(models.Model):
     total = models.FloatField(default=0)
     tip = models.FloatField(default=0)
     date_time = models.DateTimeField(default=timezone.now)
-    reservation = models.ForeignKey(
-        "reservation.Reservation",
-        on_delete=models.CASCADE,
-        related_name="orders",
-        null=True,
-        blank=True,
-    )
     PLACED = "placed"
     COMPLETED = "completed"
     CANCELED = "canceled"
