@@ -38,12 +38,12 @@ class BarInventoryItemCreateView(CreateView):
     template_name = "inventory/item/bar_inventory_item_form.html"
 
     def get_success_url(self):
-        return reverse("inventory:inventory_items")
+        return reverse("inventory:inventory_item_list")
 
 
 class BarInventoryItemListView(ListView):
     model = BarInventoryItem
-    template_name = "inventory/item/bar_inventory_items.html"
+    template_name = "inventory/item/bar_inventory_item_list.html"
 
 
 # Inventory Products
@@ -55,18 +55,18 @@ class BarInventoryProductCreateView(CreateView):
     template_name = "inventory/product/bar_inventory_product_form.html"
 
     def get_success_url(self):
-        return reverse("inventory:inventory_products")
+        return reverse("inventory:inventory_product_list")
 
 
 class BarInventoryProductListView(ListView):
     model = BarInventoryProduct
-    template_name = "inventory/product/bar_inventory_products.html"
+    template_name = "inventory/product/bar_inventory_product_list.html"
 
 
 # Purchases
 class PurchaseListView(ListView):
     model = Purchase
-    template_name = "inventory/purchase/purchases.html"
+    template_name = "inventory/purchase/purchase_list.html"
 
 
 class PurchaseCreateView(CreateView):
@@ -81,7 +81,7 @@ class PurchaseCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse("inventory:purchases_item_edit", kwargs={"pk": self.object.pk})
+        return reverse("inventory:purchase_item_edit", kwargs={"pk": self.object.pk})
 
 
 class PurchaseDetailView(DetailView):
@@ -93,7 +93,7 @@ def deliverPurchase(request, pk):
     purchase = Purchase.objects.get(pk=pk)
     purchase.delivered = True
     purchase.save()
-    return HttpResponseRedirect(reverse("inventory:purchases"))
+    return HttpResponseRedirect(reverse("inventory:purchase_list"))
 
 
 class PurchaseItemEditView(SingleObjectMixin, FormView):
@@ -119,13 +119,13 @@ class PurchaseItemEditView(SingleObjectMixin, FormView):
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse("inventory:purchases_detail", kwargs={"pk": self.object.pk})
+        return reverse("inventory:purchase_detail", kwargs={"pk": self.object.pk})
 
 
 # Brands
 class BrandsListView(ListView):
     model = Brand
-    template_name = "inventory/brand/brands.html"
+    template_name = "inventory/brand/brand_list.html"
 
 
 class BrandCreateView(CreateView):
@@ -134,13 +134,13 @@ class BrandCreateView(CreateView):
     template_name = "inventory/brand/brand_form.html"
 
     def get_success_url(self):
-        return reverse("inventory:brands")
+        return reverse("inventory:brand_list")
 
 
 # Product Categories
 class ProductCategoryListView(ListView):
     model = ProductCategory
-    template_name = "inventory/category/product_categories.html"
+    template_name = "inventory/category/product_category_list.html"
 
 
 class ProductCategoryCreateView(CreateView):
@@ -149,4 +149,4 @@ class ProductCategoryCreateView(CreateView):
     template_name = "inventory/category/product_category_form.html"
 
     def get_success_url(self):
-        return reverse("inventory:categories")
+        return reverse("inventory:category_list")

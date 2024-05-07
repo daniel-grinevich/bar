@@ -7,18 +7,21 @@ import pytest
 @pytest.mark.parametrize(
     "url_name,template",
     [
-        ("inventory:inventory_items", "inventory/item/bar_inventory_items.html"),
+        (
+            "inventory:inventory_item_list",
+            "inventory/item/bar_inventory_item_list.html",
+        ),
         (
             "inventory:inventory_item_create",
             "inventory/item/bar_inventory_item_form.html",
         ),
-        ("inventory:purchases", "inventory/purchase/purchases.html"),
-        ("inventory:purchases_create", "inventory/purchase/purchase_form.html"),
-        ("inventory:brands", "inventory/brand/brands.html"),
-        ("inventory:brands_create", "inventory/brand/brand_form.html"),
-        ("inventory:categories", "inventory/category/product_categories.html"),
+        ("inventory:purchase_list", "inventory/purchase/purchase_list.html"),
+        ("inventory:purchase_create", "inventory/purchase/purchase_form.html"),
+        ("inventory:brand_list", "inventory/brand/brand_list.html"),
+        ("inventory:brand_create", "inventory/brand/brand_form.html"),
+        ("inventory:category_list", "inventory/category/product_category_list.html"),
         (
-            "inventory:categories_create",
+            "inventory:category_create",
             "inventory/category/product_category_form.html",
         ),
     ],

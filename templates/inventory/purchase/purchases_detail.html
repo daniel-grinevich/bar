@@ -8,6 +8,6 @@
     <ul>
         {% for purchase_item in purchase.purchaseitem_set.all %}<li>{{ purchase_item }}</li>{% endfor %}
     </ul>
-    <a href="{% url 'inventory:purchases_item_edit' pk=purchase.pk %}"
+    <a href="{% url 'inventory:purchase_item_edit' pk=purchase.pk %}"
        role="button">Add A Purchase</a>
 {% endblock content %}

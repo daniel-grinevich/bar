@@ -40,7 +40,7 @@ class DeliveryTest:
     def deliver_purchase(self, pk, client):
         return client.post(
             reverse(
-                "inventory:purchases_deliver",
+                "inventory:purchase_deliver",
                 kwargs={"pk": pk},
             )
         )
