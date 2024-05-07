@@ -20,9 +20,17 @@ class ProductCategory(models.Model):
         return self.name
 
 
+STATUS_CHOICES = (
+    ("ordered", "Ordered"),
+    ("sent", "Sent"),
+    ("delivered", "Delivered"),
+    ("cancelled", "Cancelled"),
+)
+
+
 class Purchase(models.Model):
     name = models.CharField(max_length=30)
-    delivered = models.BooleanField(default=False)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="ordered")
     date_purchased = models.DateField(default=date.today)
     expected_delivery_date = models.DateField(null=True, blank=True)
     date_delivered = models.DateField(null=True, blank=True)
@@ -39,7 +47,7 @@ class Purchase(models.Model):
         for purchaseItem in self.purchaseitem_set.all():
             product = BarInventoryProduct.objects.get(pk=purchaseItem.product.pk)
             # If changed to delivered, add quantity. If changed back, subtract quantity
-            if self.delivered:
+            if self.status == "delivered":
                 product.quantity = product.quantity + purchaseItem.quantity
             else:
                 product.quantity = product.quantity - purchaseItem.quantity
@@ -51,7 +59,9 @@ class Purchase(models.Model):
         # if updating - delivered should not be allowed to be set unless you are updating the purchase.
         if self.id:
             old_value = Purchase.objects.get(pk=self.id)
-            if self.delivered is not old_value.delivered:
+            if self.status != old_value.status and (
+                self.status == "delivered" or old_value.status == "delivered"
+            ):
                 self.updatePurchaseItemDelivery()
 
         super().save(*args, **kwargs)
