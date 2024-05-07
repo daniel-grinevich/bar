@@ -13,7 +13,7 @@
                         <a href="{% url 'inventory:purchases_item_edit' pk=purchase.pk %}">{{ purchase.name }}</a>
                     </td>
                     <td>
-                        {% if not purchase.delivered %}
+                        {% if purchase.status != "delivered" %}
                             <form method="post"
                                   action="{% url 'inventory:purchases_deliver' purchase.pk %}">
                                 {% csrf_token %}

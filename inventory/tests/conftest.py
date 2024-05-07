@@ -113,8 +113,6 @@ def get_purchase_item_form_data(
 ):
     location = location_factory.create()
     product = bar_inventory_product_factory.create()
-    # purchase = purchase_factory.create()
-    # "form-0-purchase": purchase.pk,
     return {
         "purchaseitem_set-TOTAL_FORMS": "2",
         "purchaseitem_set-INITIAL_FORMS": "0",
