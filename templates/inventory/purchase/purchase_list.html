@@ -10,12 +10,12 @@
             {% for purchase in purchase_list %}
                 <tr>
                     <td>
-                        <a href="{% url 'inventory:purchases_item_edit' pk=purchase.pk %}">{{ purchase.name }}</a>
+                        <a href="{% url 'inventory:purchase_item_edit' pk=purchase.pk %}">{{ purchase.name }}</a>
                     </td>
                     <td>
                         {% if purchase.status != "delivered" %}
                             <form method="post"
-                                  action="{% url 'inventory:purchases_deliver' purchase.pk %}">
+                                  action="{% url 'inventory:purchase_deliver' purchase.pk %}">
                                 {% csrf_token %}
                                 <button type="submit">Deliver</button>
                             </form>
@@ -29,5 +29,5 @@
     {% else %}
         <p>No Purchases</p>
     {% endif %}
-    <a href="{% url 'inventory:purchases_create' %}" role="button">Add A Purchase</a>
+    <a href="{% url 'inventory:purchase_create' %}" role="button">Add A Purchase</a>
 {% endblock content %}

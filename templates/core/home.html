@@ -23,9 +23,9 @@
         {% if user.is_staff %}
         <li><a href="{% url 'inventory:inventory_item_create' %}">Inventory</a></li>
         <li><a href="{% url 'inventory:inventory_product_create' %}">Product</a></li>
-        <li><a href="{% url 'inventory:purchases' %}">Payments</a></li>
-        <li><a href="{% url 'inventory:brands' %}">Brands</a></li>
-        <li><a href="{% url 'inventory:categories' %}">Categories</a></li>
+        <li><a href="{% url 'inventory:purchase_list' %}">Payments</a></li>
+        <li><a href="{% url 'inventory:brand_list' %}">Brands</a></li>
+        <li><a href="{% url 'inventory:category_list' %}">Categories</a></li>
         {% endif %}
         <li><a href="#" onClick="document.getElementById('logoutform').submit()">Log Out</a></li>
         <li>

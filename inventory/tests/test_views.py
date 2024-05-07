@@ -36,8 +36,8 @@ def test_purchase_formset_valid(db, formset, request):
     "url_name, redirect",
     [
         (
-            "inventory:purchases_create",
-            "inventory:purchases_item_edit",
+            "inventory:purchase_create",
+            "inventory:purchase_item_edit",
         ),
     ],
 )
@@ -56,32 +56,32 @@ def test_purchase_item_form_post_redirects(
     purchase = purchase_factory.create()
     pk = purchase.pk
     # pk = new_purchase_item_form_set_data["purchaseitem_set-0-purchase"]
-    url = reverse("inventory:purchases_item_edit", kwargs={"pk": pk})
+    url = reverse("inventory:purchase_item_edit", kwargs={"pk": pk})
     response = client.post(url, data=new_purchase_item_form_set_data)
-    assertRedirects(response, reverse("inventory:purchases_detail", kwargs={"pk": pk}))
+    assertRedirects(response, reverse("inventory:purchase_detail", kwargs={"pk": pk}))
 
 
 @pytest.mark.parametrize(
     "url_name, redirect, form_data",
     [
         (
-            "inventory:brands_create",
-            "inventory:brands",
+            "inventory:brand_create",
+            "inventory:brand_list",
             "new_brand_form_data",
         ),
         (
-            "inventory:categories_create",
-            "inventory:categories",
+            "inventory:category_create",
+            "inventory:category_list",
             "new_product_category_form_data",
         ),
         (
             "inventory:inventory_item_create",
-            "inventory:inventory_items",
+            "inventory:inventory_item_list",
             "new_bar_inventory_item_form_data",
         ),
         (
             "inventory:inventory_product_create",
-            "inventory:inventory_products",
+            "inventory:inventory_product_list",
             "new_bar_inventory_product_form_data",
         ),
     ],
