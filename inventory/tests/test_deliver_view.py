@@ -20,16 +20,18 @@ class DeliveryTest:
         self.initial_product_quantity = self.product.quantity
 
     def test_deliver_purchase(self, client):
+        print(self.product.quantity)
         response = self.deliver_purchase(self.purchase.pk, client)
         self.purchase.refresh_from_db()
         self.purchase_item.refresh_from_db()
         self.product.refresh_from_db()
+        print(self.product.quantity)
         errors = self.check_delivery_errors(response)
 
         return errors
 
     def test_undeliver_purchase(self):
-        self.purchase.delivered = False
+        self.purchase.status = "ordered"
         self.purchase.save()
         self.purchase_item.refresh_from_db()
         self.product.refresh_from_db()
@@ -47,7 +49,7 @@ class DeliveryTest:
 
     def check_delivery_errors(self, response):
         errors = []
-        if not self.purchase.delivered:
+        if self.purchase.status != "delivered":
             errors.append("Purchase not delivered.")
         if (
             not self.product.quantity
@@ -60,7 +62,7 @@ class DeliveryTest:
 
     def check_undelivery_errors(self):
         errors = []
-        if self.purchase.delivered:
+        if self.purchase.status == "delivered":
             errors.append("Purchase not undelivered.")
         if not self.product.quantity == self.initial_product_quantity:
             errors.append("Product not updated correctly upon undelivery.")

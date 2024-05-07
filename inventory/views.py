@@ -91,7 +91,7 @@ class PurchaseDetailView(DetailView):
 
 def deliverPurchase(request, pk):
     purchase = Purchase.objects.get(pk=pk)
-    purchase.delivered = True
+    purchase.status = "delivered"
     purchase.save()
     return HttpResponseRedirect(reverse("inventory:purchase_list"))
 
