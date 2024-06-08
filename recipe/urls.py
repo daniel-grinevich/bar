@@ -20,6 +20,7 @@ from .views import (
     IngredientCreateView,
     IngredientUpdateView,
     IngredientDeleteView,
+    CategoryCreateView,
 )
 
 
@@ -72,4 +73,5 @@ urlpatterns = [
         IngredientDeleteView.as_view(),
         name="ingredient_delete",
     ),
+    path("category/create/", CategoryCreateView.as_view(), name="category_create"),
 ]
