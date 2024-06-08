@@ -6,12 +6,13 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from .models import Recipe, MenuItem, Menu, Ingredient
+from .models import Recipe, MenuItem, Menu, Ingredient, Category
 from .forms import (
     RecipeForm,
     MenuForm,
     MenuItemForm,
     IngredientForm,
+    CategoryForm,
 )  # You'll need to create this form based on the Recipe model
 
 
@@ -54,6 +55,7 @@ class MenuListView(ListView):
     model = Menu
     template_name = "menus/menu_list.html"
     context_object_name = "menus"
+    paginate_by = 16
 
 
 class MenuDetailView(DetailView):
@@ -123,19 +125,19 @@ class MenuItemDeleteView(DeleteView):
 
 class IngredientListView(ListView):
     model = Ingredient
-    template_name = "ingredients/ingredient_list.html"
+    template_name = "recipe/ingredient_list.html"
     context_object_name = "ingredients"
 
 
 class IngredientDetailView(DetailView):
     model = Ingredient
-    template_name = "ingredients/ingredient_detail.html"
+    template_name = "recipe/ingredient_detail.html"
 
 
 class IngredientCreateView(CreateView):
     model = Ingredient
     form_class = IngredientForm
-    template_name = "ingredients/ingredient_form.html"
+    template_name = "recipe/ingredient_form.html"
 
     def get_success_url(self):
         return reverse_lazy("ingredient_detail", kwargs={"pk": self.object.pk})
@@ -144,7 +146,7 @@ class IngredientCreateView(CreateView):
 class IngredientUpdateView(UpdateView):
     model = Ingredient
     form_class = IngredientForm
-    template_name = "ingredients/ingredient_form.html"
+    template_name = "recipe/ingredient_form.html"
 
     def get_success_url(self):
         return reverse_lazy("ingredient_detail", kwargs={"pk": self.object.pk})
@@ -152,5 +154,12 @@ class IngredientUpdateView(UpdateView):
 
 class IngredientDeleteView(DeleteView):
     model = Ingredient
-    template_name = "ingredients/ingredient_confirm_delete.html"
+    template_name = "recipe/ingredient_confirm_delete.html"
     success_url = reverse_lazy("ingredient_list")
+
+
+class CategoryCreateView(CreateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = "recipe/category_create_form.html"
+    success_url = reverse_lazy("recipe:category_detail")

@@ -29,7 +29,7 @@ user_migrations:
 	@echo "Making migrations for the users app..."
 	docker compose exec web python3 manage.py makemigrations users
 	@echo "Applying migrations to the database..."
-	docker cmpose exec web python3 manage.py migrate
+	docker compose exec web python3 manage.py migrate
 all_migrations:
 	@echo "Making migrations for the users app..."
 	docker compose exec web python3 manage.py makemigrations users
@@ -47,8 +47,10 @@ test_app:
 	docker compose exec web pytest -rP $(ARGS)
 reservation_dummy_data:
 	docker compose exec web python manage.py populate_dummy_reservation
-menuitems_dummy_data:
+order_menuitems_dummy_data:
 	docker compose exec web python manage.py populate_dummy_menu_items
+menuitems_dummy_data:
+	docker compose exec web python manage.py populate_dummy_menuitems
 superuser:
 	docker compose exec web python manage.py createsuperuser
 delete_migrations:
@@ -65,7 +67,7 @@ nuke:
 	@echo "Removing all user-defined Docker networks..."
 	-docker network rm $(shell docker network ls -q -f type=custom)
 	@echo "Docker cleanup complete."
-	docker compose up --build -d --remove-orphans
+	docker-compose up --build -d --remove-orphans
 	@echo "Docker build complete."
 	@echo "Making migrations for the users app..."
 	docker compose exec web python3 manage.py makemigrations users
@@ -75,6 +77,8 @@ nuke:
 	docker compose exec web python3 manage.py makemigrations
 	@echo "Applying migrations to the database..."
 	docker compose exec web python3 manage.py migrate --noinput
+	docker compose exec web python manage.py createsuperuser
+
 
 
 

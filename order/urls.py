@@ -16,4 +16,9 @@ urlpatterns = [
     path("orderitems/", views.OrderItemListView.as_view(), name="orderitem_list"),
     path("ticket/create/", views.TicketCreateView.as_view(), name="ticket_create"),
     path("tickets/", views.TicketListView.as_view(), name="ticket_list"),
+    path(
+        "get_menu_item_options",
+        views.get_menu_item_options,
+        name="get_menu_item_options",
+    ),
 ]

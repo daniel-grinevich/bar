@@ -4,10 +4,10 @@
 {% endblock title %}
 {% load static %}
 {% block additional_head %}
-    <link rel="stylesheet" href="{% static 'css/recipe/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/list_view.css' %}">
 {% endblock additional_head %}
 {% block content %}
-    <div class="recipe-container">
+    <div class="container">
         <h1 class="font-league">Menu Items</h1>
         <div class="queries"></div>
         <table class="font-now-reg">
@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 {% for item in menu_items %}
-                    <tr class="recipe-item">
+                    <tr class="item">
                         <td>{{ item.name }}</td>
                         <td>${{ item.price }}</td>
                         <td>
@@ -53,7 +53,7 @@
                 </span>
             </div>
         {% endif %}
-        <div class="recipe-add-button bg-orange">
+        <div class="add-button bg-orange">
             <a class="color-black" href={% url 'recipe:menu_item_create' %}>Create New Menu Item</a>
         </div>
     </div>

@@ -1,17 +1,15 @@
 {% extends "_base.html" %}
 {% block title %}
-    Menu Item
+    Category
 {% endblock title %}
 {% load static %}
 {% block additional_head %}
     <link rel="stylesheet" href="{% static 'css/create_view.css' %}">
-    <link rel="stylesheet"
-          href="{% static 'css/recipe/menu_items_create.css' %}">
 {% endblock additional_head %}
 {% block content %}
     <div class="container">
         <div class="form-container">
-            <h1 class="font-league">Create Menu Item</h1>
+            <h1 class="font-league">Create Category</h1>
             <form id="menu-item-form" method="post" class="menu-form">
                 {% csrf_token %}
                 {{ form.as_p }}

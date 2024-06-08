@@ -1,21 +1,22 @@
 import os
+import logging
 
-# Define the root directory of your Django project here
-root_dir = "."
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 def remove_migration_files(directory):
+
     for root, dirs, files in os.walk(directory, topdown=True):
-        # Skip certain directories by modifying the 'dirs' list in-place
         dirs[:] = [d for d in dirs if d not in [".venv"]]
 
         for file in files:
-            if "migrations" in root:
+            if "migrations" in root and file.endswith(".py") and file != "__init__.py":
+                full_path = os.path.join(root, file)
+                os.remove(full_path)
+                logging.info(f"Removed {file} in {root}")
 
-                if file.endswith(".py") and file != "__init__.py":
-                    os.remove(os.path.join(root, file))
-                    print(f"Removed {file} in {root}")
 
-
-# Call the function and pass the root directory of your Django project
+root_dir = "."
 remove_migration_files(root_dir)

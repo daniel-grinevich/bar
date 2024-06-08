@@ -1,20 +1,53 @@
 {% extends "_base.html" %}
 {% block title %}
-    Menu
+    Menus
 {% endblock title %}
 {% load static %}
+{% block additional_head %}
+    <link rel="stylesheet" href="{% static 'css/list_view.css' %}">
+{% endblock additional_head %}
 {% block content %}
-    <div class="header-menu">
-        <h1>Menus</h1>
-        <h3>Search</h3>
-        <h3>Query Builder</h3>
-    </div>
-    <div class="menu-list">
-        {% for menu in menus %}
-            <div class="menu">
-                <h6>{{ menu.name }}</h6>
-                <h6>{{ menu.price }}</h6>
+    <div class="container">
+        <h1 class="font-league">Menus</h1>
+        <div class="queries"></div>
+        <table class="font-now-reg">
+            <thead>
+                <tr>
+                    <th>Menu</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for menu in menus %}
+                    <tr class="menu">
+                        <td>{{ menu.name }}</td>
+                        <td>{{ menu.description }}</td>
+                        <td>
+                            {% comment %} <a href="{% url "recipe:menu_item_update" item.pk %}">Edit</a> {% endcomment %}
+                            <a href="{% url "recipe:menu_item_delete" menu.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if is_paginated %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
             </div>
-        {% endfor %}
+        {% endif %}
+        <div class="add-button bg-orange">
+            <a class="color-black" href={% url 'recipe:menu_create' %}>Create New Menu</a>
+        </div>
     </div>
 {% endblock content %}
