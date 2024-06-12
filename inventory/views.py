@@ -45,6 +45,11 @@ class BarInventoryItemListView(ListView):
     model = BarInventoryItem
     template_name = "inventory/item/bar_inventory_item_list.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(BarInventoryItemListView, self).get_context_data(**kwargs)
+        context["level_options"] = range(0, 101, 10)
+        return context
+
 
 # Inventory Products
 
@@ -120,6 +125,13 @@ class PurchaseItemEditView(SingleObjectMixin, FormView):
 
     def get_success_url(self):
         return reverse("inventory:purchase_detail", kwargs={"pk": self.object.pk})
+
+
+def changeInventoryItemLevel(request, pk):
+    purchaseItem = BarInventoryItem.objects.get(pk=pk)
+    purchaseItem.level = request.POST.get("level")
+    purchaseItem.save()
+    return HttpResponseRedirect(reverse("inventory:inventory_item_list"))
 
 
 # Brands

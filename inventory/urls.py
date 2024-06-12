@@ -20,6 +20,11 @@ urlpatterns = [
         "items/", views.BarInventoryItemListView.as_view(), name="inventory_item_list"
     ),
     path(
+        "items/<int:pk>/level/",
+        views.changeInventoryItemLevel,
+        name="purchase_item_change_level",
+    ),
+    path(
         "items/create/",
         views.BarInventoryItemCreateView.as_view(),
         name="inventory_item_create",
