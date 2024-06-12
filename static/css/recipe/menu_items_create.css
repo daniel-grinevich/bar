@@ -1,0 +1,11 @@
+#id_menus label {
+    font-family: var(--fs-now-reg-font);
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 16px;
+}
+
+#id_menus input {
+    width: 10px !important;
+}

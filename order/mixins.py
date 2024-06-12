@@ -28,6 +28,23 @@ class TicketHtmxFormMixin:
 
         return formset
 
+    def initialize_formset_htmx(self, **kwargs):
+        formset = kwargs["formset"]
+        fields = set()
+
+        # Iterate over each form in the formset
+        for form in formset:
+            # Collect the fields for each form
+            for field_name, field in form.fields.items():
+                fields.add(field_name)
+
+        # Optionally, convert the set to a list if needed
+        fields_list = list(fields)
+
+        print("Formset fields:", fields_list)
+
+        return fields_list
+
 
 class MenuItemMixin:
     def get_context_data(self, **kwargs):

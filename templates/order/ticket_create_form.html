@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block title %}
+    Create Ticket
+{% endblock title %}
+{% load static %}
+{% block content %}
+    <h1>Create Ticket</h1>
+    <form id="ticket-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </form>
+{% endblock content %}

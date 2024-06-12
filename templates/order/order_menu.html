@@ -3,20 +3,72 @@
     OrderItem
 {% endblock title %}
 {% load static %}
+{% block additional_head %}
+    <link rel="stylesheet" href="{% static 'css/order/ordermenu.css' %}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta id="get-menu-item-options-url"
+          content="{% url 'order:get_menu_item_options' %}">
+{% endblock additional_head %}
 {% block content %}
-    <form id="menu-selection"
-          hx-post="{% url "order:ticket_create" %}"
-          hx-target="#response"
-          hx-swap="outerHTML">
-        {% csrf_token %}
-        {% for item in menu_items %}
-            <div>
-                <label>{{ item.name }}</label>
-                <input type="hidden" name="item_id" value="{{ item.id }}">
-                <input type="number" name="quantity" value="1" min="1" max="10">
+    <div class="container">
+        <div id="menu-container" class="menu-container">
+            <div class="pad-3">
+                <h1 class="font-league">Dinner Menu</h1>
+                <div id="menu-selection" class="font-now-reg">
+                    {% csrf_token %}
+                    {% for category in categories %}
+                        <div class="category-section">
+                            <h5 class="catergory-header">{{ category.name }}</h5>
+                            <div class="menu-items-list">
+                                {% for menu_item in category.menu_items.all %}
+                                    <div id="menu-item-id-{{ menu_item.pk }}"
+                                         class="menu-item"
+                                         style="background-color:{{ category.color }}"
+                                         data-value="{{ menu_item.price }}"
+                                         hx-trigger="click[add_menu_item_to_ticket('{{ menu_item.pk }}','{{ menu_item.name | escapejs }}','{{ menu_item.price }}','{{ category.color }}')]">
+                                        <h5 class="font-league" id="menu-item-id-{{ menu_item.pk }}">{{ menu_item.name }}</h5>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-        {% endfor %}
-        <button type="submit">Send Ticket</button>
-    </form>
-    <div id="response"></div>
+        </div>
+        <div class="order-container">
+            <div class="order-text">
+                <h5 class="font-now-med">Waiting to start an Order :)</h5>
+                <p class="font-now-med">Item(s)</p>
+            </div>
+            <div id="order-item-list" class="order-item-list font-league">
+                {% comment %} <div>
+                        <div class="order-item">
+                            <h3>Gin & Tonic</h3>
+                        </div>
+                        <div class="order-item-details">
+                            <h4>Double Shot</h4>
+                        </div>
+                </div> {% endcomment %}
+            </div>
+            <div class="ticket-total font-league">
+                <h1>Total</h1>
+                <h1>$0.00</h1>
+            </div>
+        </div>
+        <div class="function-tab">
+            <button>Order GPT</button>
+            <button>Duplciate</button>
+            <button>Discount</button>
+        </div>
+        <div class="ticket-function-tab">
+            <button>X</button>
+            <button>Print Ticket</button>
+            <button hx-post="{% url 'order:ticket_create' %}"
+                    hx-target="#order-item-list"
+                    hx-vals='js:{myVals: getItemIds()}'>Send Ticket</button>
+        </div>
+    </div>
 {% endblock content %}
+{% block javascript %}
+    <script src="{% static 'js/order/ordermenu.js' %}"></script>
+{% endblock javascript %}

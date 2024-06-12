@@ -1,0 +1,24 @@
+<div class="pad-3">
+    <div class="edit-item-list">
+        <h3 class="font-league">Options for:</h3>
+        <div class="edit-item-container">
+            <h5 class="font-league">{{ item_name }}</h5>
+        </div>
+    </div>
+    <div class="class-container font-now-reg" data-value="{{ item_uuid }}">
+        {% for classification, options in classified_options.items %}
+            <div class="category-section">
+                <h5 class="class-header">{{ classification }}</h5>
+                <div class="option-container">
+                    {% for option in options %}
+                        <div class="option-item"
+                             style="background-color: {{ classification.color }}"
+                             hx-trigger="click[add_option_to_menu_item('{{ option.id }}', '{{ option.name | escapejs }}', '{{ option.price }}','{{ classification.color }}')]">
+                            <h5 class="font-league">{{ option.name }}</h5>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
