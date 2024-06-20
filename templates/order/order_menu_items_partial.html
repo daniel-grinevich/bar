@@ -1,0 +1,16 @@
+{% for category, items in category_items.items %}
+    <div class="category-section">
+        <h5 class="catergory-header">{{ category.name }}</h5>
+        <div class="menu-items-list">
+            {% for menu_item in items %}
+                <div id="menu-item-id-{{ menu_item.pk }}"
+                     class="menu-item"
+                     style="background-color:{{ category.color }}"
+                     data-value="{{ menu_item.price }}"
+                     hx-trigger="click[add_menu_item_to_ticket('{{ menu_item.pk }}','{{ menu_item.name | escapejs }}','{{ menu_item.price }}','{{ category.color }}')]">
+                    <h5 class="font-league" id="menu-item-id-{{ menu_item.pk }}">{{ menu_item.name }}</h5>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}

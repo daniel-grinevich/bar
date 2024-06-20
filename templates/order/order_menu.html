@@ -10,12 +10,46 @@
           content="{% url 'order:get_menu_item_options' %}">
 {% endblock additional_head %}
 {% block content %}
+    <!-- Modal HTML -->
+    <div id="discountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">
+                <h2 id="totalDisplay" class="font-league"></h2>
+            </div>
+            <div class="modal-calc-discount">
+                <input type="number"
+                       id="discountPercentage"
+                       placeholder="0%"
+                       min="0"
+                       max="100"
+                       required>
+                <h3 class="font-now-reg">OR</h3>
+                <input type="number"
+                       id="discountNumber"
+                       placeholder="0$"
+                       min="0"
+                       max="1000"
+                       required>
+            </div>
+            <button class="confirm-discount" onclick="confirmDiscount()">Confirm</button>
+            <button class="" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
     <div class="container">
         <div id="menu-container" class="menu-container">
             <div class="pad-3">
-                <h1 class="font-league">Dinner Menu</h1>
+                <div id="menu-selector"
+                     class="font-now-reg"
+                     hx-get="{% url 'order:get_menu_items_from_menu' %}"
+                     hx-trigger="change from:#menu-dropdown"
+                     hx-target="#menu-selection"
+                     hx-vals="javascript:{'menu_id': document.getElementById('menu-dropdown').value}">
+                    <select id="menu-dropdown" class="menu-dropdown">
+                        <option value="all">All Menus</option>
+                        {% for menu in menus %}<option value="{{ menu.id }}">{{ menu.name }}</option>{% endfor %}
+                    </select>
+                </div>
                 <div id="menu-selection" class="font-now-reg">
-                    {% csrf_token %}
                     {% for category in categories %}
                         <div class="category-section">
                             <h5 class="catergory-header">{{ category.name }}</h5>
@@ -58,14 +92,14 @@
         <div class="function-tab">
             <button>Order GPT</button>
             <button>Duplciate</button>
-            <button>Discount</button>
+            <button hx-trigger="click[showModal()]">Discount</button>
         </div>
         <div class="ticket-function-tab">
             <button>X</button>
             <button>Print Ticket</button>
             <button hx-post="{% url 'order:ticket_create' %}"
                     hx-target="#order-item-list"
-                    hx-vals='js:{myVals: getItemIds()}'>Send Ticket</button>
+                    hx-vals='js:{myVals: sendTicket()}'>Send Ticket</button>
         </div>
     </div>
 {% endblock content %}

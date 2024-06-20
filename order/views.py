@@ -5,8 +5,8 @@ from .models import Order, OrderItem, Ticket
 from .forms import OrderForm, OrderItemForm, OrderItemFormSet, TicketForm
 from django.urls import reverse_lazy
 from django.http import JsonResponse
-from recipe.models import MenuItem, Category, Option
-from .mixins import TicketHtmxFormMixin
+from recipe.models import MenuItem, Category, Option, Menu
+from .mixins import JsonDeserializerMixin
 import json
 
 # Create your views here.
@@ -17,25 +17,68 @@ class OrderMenuTemplateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        menu_id = self.request.GET.get("menu_id", None)
-        if menu_id:
-            context["menu_items"] = MenuItem.objects.filter(menus__id=menu_id)
-            context["categories"] = Category.objects.filter(
-                menu_item__menus__id=menu_id
-            ).distinct()
-        else:
-            context["categories"] = Category.objects.prefetch_related(
-                "menu_items"
-            ).all()
-            print(context["categories"])
+        context["categories"] = Category.objects.prefetch_related("menu_items").all()
+        context["menus"] = Menu.objects.all()
         return context
 
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if request.htmx:
-            return render(request, "order/menu_item_partial.html", context)
+
+def get_menu_item_options(request):
+    if request.htmx.request.method == "GET":
+        item_id = request.GET.get("item_id")
+        item_uuid = request.GET.get("item_uuid")
+        menu_id = request.GET.get("menu_id")
+
+        # Fetch the item name, assuming that 'name' is an attribute of MenuItem
+        item = MenuItem.objects.get(id=item_id)
+
+        # Fetch options and use select_related to optimize database access
+        options_queryset = item.get_options()
+
+        # Group options by classification
+        classification_options = {}
+        for option in options_queryset:
+            if option.classification not in classification_options:
+                classification_options[option.classification] = []
+            classification_options[option.classification].append(option)
+
+        context = {
+            "classified_options": classification_options,
+            "item_id": item_id,
+            "item_name": item.name,
+            "item_uuid": item_uuid,
+            "menu_id": menu_id,
+        }
+        return render(request, "order/options_menu_partial.html", context)
+
+    return JsonResponse({"status": "error", "message": "No options were loaded"})
+
+
+def get_menu_items_from_menu(request):
+    if request.htmx.request.method == "GET":
+        menu_id = request.GET.get("menu_id")
+        if menu_id == "all":
+            menu_items = MenuItem.objects.all().prefetch_related("categories")
         else:
-            return self.render_to_response(context)
+            menu_items = MenuItem.objects.filter(menus__id=menu_id).prefetch_related(
+                "categories"
+            )
+        category_items = {}
+        for item in menu_items:
+            for category in item.categories.all():
+                if category not in category_items:
+                    category_items[category] = [item]
+                else:
+                    category_items[category].append(item)
+
+        menus = Menu.objects.all()
+        context = {"category_items": category_items, "menus": menus}
+        back_button = request.GET.get("back", False)
+        print(back_button)
+        if back_button:
+
+            return render(request, "order/order_menu_back_partial.html", context)
+        else:
+            return render(request, "order/order_menu_items_partial.html", context)
 
 
 class OrderCreateView(CreateView):
@@ -43,16 +86,6 @@ class OrderCreateView(CreateView):
     form_class = OrderForm
     template_name = "order/order_create_form.html"
     success_url = reverse_lazy("order_list")
-
-    # def form_valid(self, form):
-    #     response = super().form_valid(form)
-    #     # Assuming 'menu_items' are the IDs of the items selected
-    #     menu_items_ids = self.request.POST.getlist('menu_items')
-    #     for item_id in menu_items_ids:
-    #       menu_item = MenuItem.objects.get(id=item_id)
-    #       OrderItem.objects.create(order=self.object, menu_item=menu_item, quantity=1)
-    #     # Respond in a way suitable for HTMX (e.g., updating a part of the page)
-    #     return JsonResponse({'status': 'success', 'order_id': self.object.id})
 
 
 class OrderListView(ListView):
@@ -80,38 +113,7 @@ class TicketListView(ListView):
     context_object_name = "tickets"
 
 
-def get_menu_item_options(request):
-    if request.htmx.request.method == "GET":
-        item_id = request.GET.get("item_id")
-        item_uuid = request.GET.get("item_uuid")
-
-        # Fetch the item name, assuming that 'name' is an attribute of MenuItem
-        item = MenuItem.objects.get(id=item_id)
-
-        # Fetch options and use select_related to optimize database access
-        options_queryset = Option.objects.filter(
-            categories__menu_items__id=item_id
-        ).select_related("classification")
-
-        # Group options by classification
-        classification_options = {}
-        for option in options_queryset:
-            if option.classification not in classification_options:
-                classification_options[option.classification] = []
-            classification_options[option.classification].append(option)
-
-        context = {
-            "classified_options": classification_options,
-            "item_id": item_id,
-            "item_name": item.name,
-            "item_uuid": item_uuid,
-        }
-        return render(request, "order/options_menu_partial.html", context)
-
-    return JsonResponse({"status": "error", "message": "No options were loaded"})
-
-
-class TicketCreateView(TicketHtmxFormMixin, View):
+class TicketCreateView(JsonDeserializerMixin, View):
     template_name = "order/ticket_create_form.html"
     form_class = OrderItemFormSet
 
@@ -119,64 +121,117 @@ class TicketCreateView(TicketHtmxFormMixin, View):
 
         if request.htmx:
 
-            ticket_id = request.POST.get("ticket_id", None)
+            try:
+                # Get JSON data from request
+                data_str = request.POST.get("myVals", None)
 
-            if ticket_id is None:
-                last_ticket = Ticket.objects.last()
-                ticket_id = last_ticket.id
+                if data_str:
+                    # Load string data into JSON
+                    data = json.loads(data_str)
+                    for ticket_data in data["myVals"]["tickets"]:
+                        print(f"TICKET ID: {ticket_data['id']}")
+                        ticket, created = Ticket.objects.update_or_create(
+                            id=ticket_data["id"],
+                            defaults={
+                                "equipment": ticket_data.get("equipment"),
+                                "status": ticket_data["status"],
+                                "reservation": ticket_data.get(
+                                    "reservation"
+                                ),  # Handle None if necessary
+                            },
+                        )
 
-            item_ids = request.POST.get("myVals")
-            data_dict = json.loads(item_ids)
+                        order_items = []
+                        for item_data in ticket_data["items"]:
+                            print(f"ITEM DATA: {item_data}")
+                            try:
+                                menu_item = MenuItem.objects.get(id=item_data["id"])
+                                # Create OrderItem only if MenuItem exists
+                                order_item = OrderItem(
+                                    item=menu_item,
+                                    ticket=ticket,  # Directly use the ticket instance
+                                    options=item_data["options"],
+                                )
+                                order_items.append(order_item)
+                            except MenuItem.DoesNotExist:
+                                print(
+                                    f"Error: MenuItem with ID {item_data['id']} does not exist."
+                                )
 
-            menu_id_list = data_dict["item_ids"].split(",")
+                        # Bulk create order items if any
+                        if order_items:
+                            OrderItem.objects.bulk_create(order_items)
 
-            """melt the id strings into just ids that can be used to make order objects"""
-            order_ids = {}
-            for menu_id in menu_id_list:
-                split_pos = menu_id.rfind("-") + 1
-                order_id = int(menu_id[split_pos:])
-                if order_id in order_ids:
-                    order_ids[order_id] += 1
+                    return JsonResponse({"status": "successful"})
+
                 else:
-                    order_ids[order_id] = 0
+                    JsonResponse(
+                        {"status": "error", "message": "No data passed"}, status=400
+                    )
 
-            formset_data = {
-                "form-TOTAL_FORMS": "0",
-                "form-INITIAL_FORMS": "0",
-                "form-MAX_NUM_FORMS": "",
-            }
-            for i, order_id in enumerate(order_ids):
-                quantity = order_ids[order_id]
+            except json.JSONDecodeError:
+                return JsonResponse(
+                    {"status": "error", "message": "Invalid JSON data."}, status=400
+                )
 
-                formset_data[f"formset-string-{i}-id"] = order_id
-                formset_data[f"formset_string-{i}-quantity"] = quantity
-                formset_data[f"formset_string-{i}-ticket"] = ticket_id
+        #     ticket_id = request.POST.get("ticket_id", None)
 
-            order_items_form = OrderItemFormSet(initial=formset_data)
-            print(formset_data)
-            if order_items_form.is_valid():
-                print("valid formset")
+        #     if ticket_id is None:
+        #         last_ticket = Ticket.objects.last()
+        #         ticket_id = last_ticket.id
 
-            # if request.get("ticket_id") is None:
-            #     last_ticket = Ticket.objects.last()
-            #     last_ticket_id = last_ticket.id + 1 if last_ticket else 1
+        #     item_ids = request.POST.get("myVals")
+        #     data_dict = json.loads(item_ids)
 
-            # ticketform = TicketForm()
-            # order_items = []
+        #     menu_id_list = data_dict["item_ids"].split(",")
 
-            # next_ticket_id = last_ticket.id + 1 if last_ticket else 1
-            # menu_item_ids = request.POST.getlist("menu_items")
-            # ticket_id = request.POST.get("ticket_id", None)
+        #     """melt the id strings into just ids that can be used to make order objects"""
+        #     order_ids = {}
+        #     for menu_id in menu_id_list:
+        #         split_pos = menu_id.rfind("-") + 1
+        #         order_id = int(menu_id[split_pos:])
+        #         if order_id in order_ids:
+        #             order_ids[order_id] += 1
+        #         else:
+        #             order_ids[order_id] = 0
 
-            # if ticket_id:
-            #     ticket = Ticket.objects.filter(id=ticket_id)
-            # else:
+        #     formset_data = {
+        #         "form-TOTAL_FORMS": "0",
+        #         "form-INITIAL_FORMS": "0",
+        #         "form-MAX_NUM_FORMS": "",
+        #     }
+        #     for i, order_id in enumerate(order_ids):
+        #         quantity = order_ids[order_id]
 
-            #     Ticket.objects.create()
+        #         formset_data[f"formset-string-{i}-id"] = order_id
+        #         formset_data[f"formset_string-{i}-quantity"] = quantity
+        #         formset_data[f"formset_string-{i}-ticket"] = ticket_id
 
-        return JsonResponse(
-            {"status": "success", "message": "Order created successfully!"}
-        )
+        #     order_items_form = OrderItemFormSet(initial=formset_data)
+        #     print(formset_data)
+        #     if order_items_form.is_valid():
+        #         print("valid formset")
+
+        #     # if request.get("ticket_id") is None:
+        #     #     last_ticket = Ticket.objects.last()
+        #     #     last_ticket_id = last_ticket.id + 1 if last_ticket else 1
+
+        #     # ticketform = TicketForm()
+        #     # order_items = []
+
+        #     # next_ticket_id = last_ticket.id + 1 if last_ticket else 1
+        #     # menu_item_ids = request.POST.getlist("menu_items")
+        #     # ticket_id = request.POST.get("ticket_id", None)
+
+        #     # if ticket_id:
+        #     #     ticket = Ticket.objects.filter(id=ticket_id)
+        #     # else:
+
+        #     #     Ticket.objects.create()
+
+        # return JsonResponse(
+        #     {"status": "success", "message": "Order created successfully!"}
+        # )
 
         # ticket_form = TicketForm(
         #     {

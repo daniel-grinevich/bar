@@ -1,57 +1,46 @@
-from recipe.models import Menu
+import json
+from django.db import transaction
+from django.http import JsonResponse
 
 
-class TicketHtmxFormMixin:
-    def setup_formset(self, **kwargs):
-        request = kwargs.get("request")
-        keys = kwargs.get("keys", [])
+class JsonDeserializerMixin:
+    model = None
 
-        # Prepare data dict for formset initialization
-        formset_data = {
-            "form-TOTAL_FORMS": "0",  # This will be updated
-            "form-INITIAL_FORMS": "0",
-            "form-MAX_NUM_FORMS": "",
-        }
+    def deserialize_json_with_parent_and_children(self, **kwargs):
+        try:
+            with transaction.atomic():
+                json_data = kwargs.get("json_data", None)
 
-        # Assuming keys contain names of the fields expected in each form of the formset
-        total_forms = 0
-        for key in keys:
-            values = request.POST.getlist(key)
-            total_forms = len(values)  # Assuming all lists are of the same length
-            for i, value in enumerate(values):
-                formset_data[f"{kwargs.get('formset_string')}-{i}-{key}"] = value
+                if json_data:
+                    parent_key = kwargs.get("parent_key")
+                    parent_model = kwargs.get("parent_model")
+                    child_key = kwargs.get("child_key")
+                    child_model = kwargs.get("child_model")
+                    child_relation_attr = kwargs.get("child_relation_attr")
 
-        formset_data["form-TOTAL_FORMS"] = str(total_forms)
+                    parent_instances = []
+                    for parent_instance_data in json_data[parent_key]:
+                        parent_instance, created = (
+                            parent_model.objects.update_or_create(
+                                id=parent_instance_data.get("id"),
+                                defaults={**parent_instance_data},
+                            )
+                        )
 
-        # Now, initialize the formset with the prepared data
-        formset = formset_data
+                        parent_instances.append(parent_instance)
 
-        return formset
+                        child_instances = []
+                        for child_instance_data in parent_instance[child_key]:
+                            child_instance_data[child_relation_attr] = (
+                                parent_instance  # Set FK to the parent instance
+                            )
+                            child = child_model(**child_instance_data)
+                            child_instances.append(child)
 
-    def initialize_formset_htmx(self, **kwargs):
-        formset = kwargs["formset"]
-        fields = set()
+                        if child_instances:
+                            child_model.objects.bulk_create(child_instances)
 
-        # Iterate over each form in the formset
-        for form in formset:
-            # Collect the fields for each form
-            for field_name, field in form.fields.items():
-                fields.add(field_name)
-
-        # Optionally, convert the set to a list if needed
-        fields_list = list(fields)
-
-        print("Formset fields:", fields_list)
-
-        return fields_list
-
-
-class MenuItemMixin:
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        menu_id = kwargs.get("request").GET.get("menu_id", None)
-
-        # book = Book.objects.get(title='Example Book')
-        # authors = book.authors.all()
-        menu = Menu.objects.get(id=menu_id)
-        context["menu_items"] = menu.items.all()
+                else:
+                    NotImplementedError("json data was empty")
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON: {e}")
