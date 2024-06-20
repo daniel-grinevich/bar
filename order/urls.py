@@ -21,4 +21,9 @@ urlpatterns = [
         views.get_menu_item_options,
         name="get_menu_item_options",
     ),
+    path(
+        "get_menu_items_from_menu",
+        views.get_menu_items_from_menu,
+        name="get_menu_items_from_menu",
+    ),
 ]

@@ -2,8 +2,12 @@
     <div class="edit-item-list">
         <h3 class="font-league">Options for:</h3>
         <div class="edit-item-container">
-            <h5 class="font-league">{{ item_name }}</h5>
+            <h5 data-value="{{ item_uuid }}" class="font-league">{{ item_name }}</h5>
         </div>
+        <button class="option-back-button bg-orange font-now-reg"
+                hx-trigger="click"
+                hx-target=".pad-3"
+                hx-get="{% url 'order:get_menu_items_from_menu' %}?menu_id={{ menu_id }}&back=True">Back</button>
     </div>
     <div class="class-container font-now-reg" data-value="{{ item_uuid }}">
         {% for classification, options in classified_options.items %}

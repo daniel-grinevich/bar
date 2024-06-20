@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from recipe.models import MenuItem
+import uuid
 
 
 class Equipment(models.Model):
@@ -9,6 +10,7 @@ class Equipment(models.Model):
 
 
 class Ticket(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     equipment = models.ForeignKey(
         "Equipment", on_delete=models.CASCADE, null=True, blank=True
     )
@@ -74,6 +76,7 @@ class OrderItem(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
     item = models.ForeignKey("recipe.MenuItem", on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    options = models.JSONField()
 
     def __str__(self):
         return f"{self.quantity} x {self.item.name} for Order {self.order.id}"

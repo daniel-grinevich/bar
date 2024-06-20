@@ -17,6 +17,9 @@ class Menu(models.Model):
         "MenuItem", related_name="menus", blank=True, null=True
     )
 
+    def get_menu_items(self):
+        return self.items.all()
+
     def __str__(self):
         return self.name
 
@@ -26,6 +29,11 @@ class MenuItem(models.Model):
     description = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     categories = models.ManyToManyField(Category, related_name="menu_items")
+
+    def get_options(self):
+        return Option.objects.filter(categories__menu_items=self).select_related(
+            "classification"
+        )
 
     def __str__(self):
         return self.name

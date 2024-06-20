@@ -70,9 +70,12 @@
     flex-wrap: wrap;
 }
 .item-name {
-    border: 1px solid black;
+    border: 1px solid var(--fs-black);
     width: 60%;
     padding-left: 1rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem 0rem 1rem;
 }
 .order-text {
     height: 100px;
@@ -220,6 +223,7 @@
     margin-left: 2rem;
 }
 .edit-item-list {
+    position: relative;
     display: flex;
     align-items: baseline;
     gap: 1rem;
@@ -228,4 +232,93 @@
     border: 1px solid black;
     width: fit-content;
     padding: 0rem 1rem 0rem 1rem;
+}
+.option-back-button {
+    position: absolute;
+    top:0;
+    right:0;
+    color: var(--fs-black);
+    padding: .5rem 1rem;
+    font-size: var(--fs-100);
+    border: 1px solid var(--fs-black);
+    cursor: pointer;
+    margin-top: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+.option-back-button:hover {
+    background-color: var(--fs-black);
+    color: #FFF;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    border: 1px solid var(--fs-black);
+    width: 30%;
+    max-width: 50rem;
+}
+.modal-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--fs-black);
+}
+.modal-calc-discount {
+    display: flex;
+    justify-content: space-around;
+    padding: 3rem 0 3rem 0;
+    align-items: baseline;
+}
+
+/* General styles for the input field */
+#discountPercentage {
+    width: 25%;
+    height: 32px;
+    font-size: 32px;
+    margin: 10px 0;
+    border: none;
+}
+#discountNumber {
+    width: 25%;
+    height: 32px;
+    font-size: 32px;
+    margin: 10px 0;
+    border: none;
+}
+
+
+/* Custom spinner buttons */
+#discountPercentage[type=number] {
+    position: relative;
+}
+
+#discountPercentage[type=number]::after {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    font-size: 18px; /* Arrow size */
+    color: #333; /* Arrow color */
+}
+
+.confirm-discount {
+    height: 5rem;
+    font-family: var(--fs-now-reg-font);
+    cursor: pointer;
+    border-radius: 0;
+    border: 1px solid var(--fs-black);
+    width: 15rem;
+    background-color: #24D38B;
 }
