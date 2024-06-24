@@ -6,27 +6,18 @@
 {% block content %}
     <h2>Inventory Items</h2>
     {% if barinventoryitem_list %}
-        <ul>
-            {% for item in barinventoryitem_list %}
-                <li>
-                    <a>{{ item.name }}</a>
-                </li>
-                <form method="post"
-                      action="{% url 'inventory:purchase_item_change_level' item.pk %}">
-                    {% csrf_token %}
-                    <li>
-                        <select name="level" id="level" value={{ item.level }}>
-                            {% for level in level_options %}
-                                <option {% if level == item.level %}selected{% endif %} key={{x}} value={{x}} >{{ level }}</option>
-                            {% endfor %}
-                        </select>
-                    </li>
-                    <li>
-                        <button type="submit"> Change </button>
-                    </li>    
-                </form>
-            {% endfor %}
-        </ul>
+        <table>
+            <tr>
+                {% for item in barinventoryitem_list %}
+                    <td>
+                        <a>{{ item.name }}</a>
+                    </td>
+                    <td>{{ item.level }}</td>
+                    <td>{{ item.date_expired }}</td>
+                    <td>{{ item.location }}</td>
+                {% endfor %}
+            </tr>
+        </table>
     {% else %}
         <p>No Items</p>
     {% endif %}
