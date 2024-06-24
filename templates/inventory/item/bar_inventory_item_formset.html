@@ -1,0 +1,38 @@
+{% extends "_base.html" %}
+{% block title %}
+    Bar Inventory Items
+{% endblock title %}
+{% load static %}
+{% block content %}
+    <h2>Inventory Items</h2>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% for hidden_field in formset.hidden_fields %}
+                {{ hidden_field.errors }}
+                {{ hidden_field }}
+            {% endfor %}
+            {% csrf_token %}
+            {{ formset.management_form }}
+            {{ formset.non_form_errors }}
+            <h2>Update Items</h2>
+            {% for barinventoryitem_form in formset %}
+                <hr>
+                {% for hidden_field in barinventoryitem_form.hidden_fields %}
+                    {{ hidden_field.errors }}
+                    {{ hidden_field }}
+                {% endfor %}
+                <tr>
+                    <td>
+                        <a>{{ barinventoryitem_form.name }}</a>
+                    </td>
+                    <td>{{ barinventoryitem_form.level }}</td>
+                    <td>{{ barinventoryitem_form.date_expired }}</td>
+                    <td>{{ barinventoryitem_form.product }}</td>
+                    <td>{{ barinventoryitem_form.location }}</td>
+                </tr>
+            {% endfor %}
+            <hr>
+            <p>
+                <button type="submit" value="Update Item">Update Item</button>
+            </p>
+        </form>
+{% endblock content %}

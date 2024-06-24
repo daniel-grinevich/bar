@@ -19,6 +19,21 @@ class BarInventoryItemForm(forms.ModelForm):
             "date_expired",
             "product",
         ]
+        widgets = {
+            "date_expired": forms.DateInput(
+                format=("%Y-%m-%d"),
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Select a date",
+                    "type": "date",
+                },
+            ),
+        }
+
+
+BarInventoryItemFormSet = forms.modelformset_factory(
+    BarInventoryItem, form=BarInventoryItemForm
+)
 
 
 class BarInventoryProductForm(forms.ModelForm):
@@ -56,7 +71,6 @@ class PurchaseForm(forms.ModelForm):
 
 
 class PurchaseItemForm(forms.ModelForm):
-
     class Meta:
         model = PurchaseItem
         fields = [
